@@ -1,7 +1,7 @@
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import ProfileCard from '@/components/student/ProfileCard'
-import WorksTable from '@/components/student/WorksTable'
+import WorksSection from '@/components/student/WorksSection'
 import type { AcademicWork, Student } from '@/types'
 
 export default async function StudentDashboardPage() {
@@ -10,14 +10,12 @@ export default async function StudentDashboardPage() {
 
   if (!user) redirect('/login')
 
-  // Perfil del estudiante
   const { data: student } = await supabase
     .from('students')
     .select('full_name, email, institution, academic_level')
     .eq('id', user.id)
     .single()
 
-  // Trabajos académicos del estudiante (RLS garantiza que solo ve los propios)
   const { data: works } = await supabase
     .from('academic_works')
     .select('id, title, work_type, academic_level, status, created_at')
@@ -33,13 +31,15 @@ export default async function StudentDashboardPage() {
       </div>
 
       {student && (
-        <ProfileCard student={student as Pick<Student, 'full_name' | 'email' | 'institution' | 'academic_level'>} />
+        <ProfileCard
+          student={student as Pick<Student, 'full_name' | 'email' | 'institution' | 'academic_level'>}
+        />
       )}
 
-      <div>
-        <h2 className="mb-3 text-base font-semibold text-zinc-900">Mis trabajos</h2>
-        <WorksTable works={(works ?? []) as AcademicWork[]} />
-      </div>
+      <WorksSection
+        works={(works ?? []) as AcademicWork[]}
+        userId={user.id}
+      />
     </div>
   )
 }
