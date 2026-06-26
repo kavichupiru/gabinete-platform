@@ -1,7 +1,13 @@
+import type { Metadata } from 'next'
+import RegisterForm from '@/components/student/RegisterForm'
+
+export const metadata: Metadata = { title: 'Registrarse — Gabinete de Estudios' }
+
 export default function RegisterPage() {
   return (
-    <main className="flex min-h-screen items-center justify-center">
-      <h1 className="text-2xl font-bold">Registrarse</h1>
-    </main>
+    <div className="rounded-2xl border border-zinc-200 bg-white p-8 shadow-sm">
+      <h2 className="mb-6 text-xl font-semibold text-zinc-900">Crear cuenta</h2>
+      <RegisterForm />
+    </div>
   )
 }
