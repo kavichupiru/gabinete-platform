@@ -39,7 +39,7 @@ export default function RegisterForm() {
         name="institution"
         type="text"
         required
-        placeholder="Ej: FCM-UNA"
+        placeholder="Ej: Universidad Nacional de Asunción"
       />
 
       <div className="flex flex-col gap-1">

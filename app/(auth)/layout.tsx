@@ -8,7 +8,7 @@ export default function AuthLayout({ children }: { children: React.ReactNode }) 
             Gabinete de Estudios
           </h1>
           <p className="mt-1 text-sm text-zinc-500">
-            Asesoría metodológica FCM-UNA / FENOB-UNA
+            Auditoría y producción científica para investigadores.
           </p>
         </div>
         {children}
