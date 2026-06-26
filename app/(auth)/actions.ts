@@ -5,14 +5,15 @@ import { createClient } from '@/lib/supabase/server'
 import type { AcademicLevel } from '@/types'
 
 export type AuthError = { message: string }
+export type AuthState = { message: string; type: 'error' | 'confirm' }
 
 // ── Registro ─────────────────────────────────────────────────────────────────
 
 // useActionState requiere firma (prevState, formData)
 export async function signUp(
-  _prevState: AuthError | undefined,
+  _prevState: AuthState | undefined,
   formData: FormData
-): Promise<AuthError | undefined> {
+): Promise<AuthState | undefined> {
   const email          = formData.get('email') as string
   const password       = formData.get('password') as string
   const full_name      = formData.get('full_name') as string
@@ -21,7 +22,7 @@ export async function signUp(
 
   const supabase = await createClient()
 
-  const { error } = await supabase.auth.signUp({
+  const { data, error } = await supabase.auth.signUp({
     email,
     password,
     options: {
@@ -30,7 +31,15 @@ export async function signUp(
     },
   })
 
-  if (error) return { message: error.message }
+  if (error) return { message: error.message, type: 'error' }
+
+  // Supabase con confirmación de email: session es null hasta que el usuario confirme
+  if (!data.session) {
+    return {
+      message: `Revisá tu correo (${email}) y hacé clic en el enlace de confirmación para activar tu cuenta.`,
+      type: 'confirm',
+    }
+  }
 
   redirect('/dashboard/student')
 }

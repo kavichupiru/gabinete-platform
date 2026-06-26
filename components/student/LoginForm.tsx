@@ -2,7 +2,7 @@
 
 import { useActionState } from 'react'
 import Link from 'next/link'
-import { signIn } from '@/app/(auth)/actions'
+import { signIn, type AuthError } from '@/app/(auth)/actions'
 import FormField from '@/components/ui/FormField'
 import SubmitButton from '@/components/ui/SubmitButton'
 

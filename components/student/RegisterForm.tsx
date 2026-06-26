@@ -2,7 +2,7 @@
 
 import { useActionState } from 'react'
 import Link from 'next/link'
-import { signUp } from '@/app/(auth)/actions'
+import { signUp, type AuthState } from '@/app/(auth)/actions'
 import FormField from '@/components/ui/FormField'
 import SubmitButton from '@/components/ui/SubmitButton'
 
@@ -14,7 +14,7 @@ const NIVELES = [
 ]
 
 export default function RegisterForm() {
-  const [error, action] = useActionState(signUp, undefined)
+  const [state, action] = useActionState(signUp, undefined)
 
   return (
     <form action={action} className="flex flex-col gap-5">
@@ -70,9 +70,14 @@ export default function RegisterForm() {
         minLength={6}
       />
 
-      {error && (
+      {state?.type === 'confirm' && (
+        <p className="rounded-lg bg-green-50 px-3 py-2 text-sm text-green-700">
+          {state.message}
+        </p>
+      )}
+      {state?.type === 'error' && (
         <p className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-600">
-          {error.message}
+          {state.message}
         </p>
       )}
 
