@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { signOut } from '@/app/(auth)/actions'
+import BrandLogo from '@/components/ui/BrandLogo'
 import type { UserRole } from '@/types'
 
 interface Props {
@@ -14,8 +15,8 @@ export default function DashboardNav({ fullName, role }: Props) {
     <header className="border-b border-zinc-200 bg-white">
       <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-3 sm:px-6">
         <div className="flex items-center gap-6">
-          <Link href="/dashboard/student" className="text-sm font-semibold text-zinc-900">
-            Gabinete de Estudios
+          <Link href="/dashboard/student">
+            <BrandLogo variant="compact" />
           </Link>
           {(role === 'supervisor' || role === 'admin') && (
             <Link
