@@ -4,6 +4,7 @@ import { useActionState } from 'react'
 import Link from 'next/link'
 import { signIn, type AuthError } from '@/app/(auth)/actions'
 import FormField from '@/components/ui/FormField'
+import PasswordField from '@/components/ui/PasswordField'
 import SubmitButton from '@/components/ui/SubmitButton'
 
 export default function LoginForm() {
@@ -19,14 +20,7 @@ export default function LoginForm() {
         required
         placeholder="tu@correo.com"
       />
-      <FormField
-        label="Contraseña"
-        name="password"
-        type="password"
-        autoComplete="current-password"
-        required
-        placeholder="••••••••"
-      />
+      <PasswordField autoComplete="current-password" />
 
       {error && (
         <p className="rounded-lg bg-red-50 px-3 py-2 text-sm text-red-600">

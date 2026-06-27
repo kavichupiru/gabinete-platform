@@ -4,6 +4,7 @@ import { useActionState } from 'react'
 import Link from 'next/link'
 import { signUp, type AuthState } from '@/app/(auth)/actions'
 import FormField from '@/components/ui/FormField'
+import PasswordField from '@/components/ui/PasswordField'
 import SubmitButton from '@/components/ui/SubmitButton'
 
 const NIVELES = [
@@ -60,12 +61,8 @@ export default function RegisterForm() {
         </select>
       </div>
 
-      <FormField
-        label="Contraseña"
-        name="password"
-        type="password"
+      <PasswordField
         autoComplete="new-password"
-        required
         placeholder="Mínimo 6 caracteres"
         minLength={6}
       />
