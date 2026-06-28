@@ -1,6 +1,8 @@
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import ProfileForm from '@/components/student/ProfileForm'
+import WorksSection from '@/components/student/WorksSection'
+import type { AcademicWork } from '@/types'
 
 export default async function StudentDashboardPage() {
   const supabase = await createClient()
@@ -13,6 +15,11 @@ export default async function StudentDashboardPage() {
     .select('full_name, email, institution, academic_level, role')
     .eq('id', user.id)
     .single()
+
+  const { data: works } = await supabase
+    .from('academic_works')
+    .select('id, title, work_type, academic_level, status, created_at')
+    .order('created_at', { ascending: false })
 
   const fullName    = student?.full_name?.trim() || ''
   const email       = student?.email || user.email || ''
@@ -75,15 +82,10 @@ export default async function StudentDashboardPage() {
 
       {/* Módulos M1-M8 */}
       {profileComplete && (
-        <div className="rounded-2xl border border-zinc-200 bg-white px-6 py-5 shadow-sm">
-          <h2 className="mb-1 text-base font-semibold text-zinc-900">Mis trabajos</h2>
-          <p className="text-sm text-zinc-500">
-            Aquí verás el estado de tus trabajos académicos y podrás subir nuevos documentos.
-          </p>
-          <div className="mt-4 rounded-lg border border-dashed border-zinc-300 bg-zinc-50 px-4 py-8 text-center">
-            <p className="text-sm text-zinc-400">Módulo de trabajos — próximamente</p>
-          </div>
-        </div>
+        <WorksSection
+          works={(works ?? []) as AcademicWork[]}
+          userId={user.id}
+        />
       )}
 
     </div>
