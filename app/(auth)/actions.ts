@@ -17,7 +17,11 @@ export async function signUp(
   const email          = formData.get('email') as string
   const password       = formData.get('password') as string
   const full_name      = formData.get('full_name') as string
+  const country        = formData.get('country') as string
+  const id_number      = formData.get('id_number') as string
+  const phone          = formData.get('phone') as string
   const institution    = formData.get('institution') as string
+  const career         = formData.get('career') as string
   const academic_level = formData.get('academic_level') as AcademicLevel
 
   const supabase = await createClient()
@@ -30,7 +34,7 @@ export async function signUp(
     options: {
       emailRedirectTo: `${siteUrl}/auth/callback`,
       // El trigger handle_new_user() lee estos campos para crear gabinete.students
-      data: { full_name, institution, academic_level },
+      data: { full_name, country, id_number, phone, institution, career, academic_level },
     },
   })
 

@@ -31,7 +31,7 @@ export default function ProfileCard({ student }: Props) {
         <div>
           <dt className="text-xs font-medium uppercase tracking-wide text-zinc-400">Nivel académico</dt>
           <dd className="mt-0.5 text-sm text-zinc-900">
-            {NIVEL_LABEL[student.academic_level] ?? student.academic_level}
+            {student.academic_level ? (NIVEL_LABEL[student.academic_level] ?? student.academic_level) : '—'}
           </dd>
         </div>
       </dl>

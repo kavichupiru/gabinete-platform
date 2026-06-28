@@ -12,7 +12,7 @@ export default async function StudentDashboardPage() {
 
   const { data: student } = await supabase
     .from('students')
-    .select('full_name, email, institution, academic_level, role')
+    .select('full_name, email, country, id_number, phone, institution, career, academic_level, role')
     .eq('id', user.id)
     .single()
 
@@ -23,7 +23,11 @@ export default async function StudentDashboardPage() {
 
   const fullName    = student?.full_name?.trim() || ''
   const email       = student?.email || user.email || ''
+  const country     = student?.country?.trim() || ''
+  const idNumber    = student?.id_number?.trim() || ''
+  const phone       = student?.phone?.trim() || ''
   const institution = student?.institution?.trim() || ''
+  const career      = student?.career?.trim() || ''
   const level       = student?.academic_level || ''
   const profileComplete = fullName.length > 0
 
@@ -44,7 +48,7 @@ export default async function StudentDashboardPage() {
         <h2 className="mb-4 text-base font-semibold text-zinc-900">Mi perfil</h2>
 
         {profileComplete ? (
-          <dl className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+          <dl className="grid grid-cols-1 gap-y-4 gap-x-8 sm:grid-cols-2">
             <div>
               <dt className="text-xs font-medium uppercase tracking-wide text-zinc-400">Nombre</dt>
               <dd className="mt-0.5 text-sm text-zinc-900">{fullName}</dd>
@@ -53,10 +57,34 @@ export default async function StudentDashboardPage() {
               <dt className="text-xs font-medium uppercase tracking-wide text-zinc-400">Correo</dt>
               <dd className="mt-0.5 text-sm text-zinc-900">{email}</dd>
             </div>
+            {country && (
+              <div>
+                <dt className="text-xs font-medium uppercase tracking-wide text-zinc-400">País</dt>
+                <dd className="mt-0.5 text-sm text-zinc-900">{country}</dd>
+              </div>
+            )}
+            {idNumber && (
+              <div>
+                <dt className="text-xs font-medium uppercase tracking-wide text-zinc-400">Documento de identidad</dt>
+                <dd className="mt-0.5 text-sm text-zinc-900">{idNumber}</dd>
+              </div>
+            )}
+            {phone && (
+              <div>
+                <dt className="text-xs font-medium uppercase tracking-wide text-zinc-400">Teléfono</dt>
+                <dd className="mt-0.5 text-sm text-zinc-900">{phone}</dd>
+              </div>
+            )}
             {institution && (
               <div>
-                <dt className="text-xs font-medium uppercase tracking-wide text-zinc-400">Institución</dt>
+                <dt className="text-xs font-medium uppercase tracking-wide text-zinc-400">Universidad / Institución</dt>
                 <dd className="mt-0.5 text-sm text-zinc-900">{institution}</dd>
+              </div>
+            )}
+            {career && (
+              <div>
+                <dt className="text-xs font-medium uppercase tracking-wide text-zinc-400">Carrera</dt>
+                <dd className="mt-0.5 text-sm text-zinc-900">{career}</dd>
               </div>
             )}
             {level && (
@@ -73,14 +101,18 @@ export default async function StudentDashboardPage() {
             </p>
             <ProfileForm
               initialName={fullName}
+              initialCountry={country}
+              initialIdNumber={idNumber}
+              initialPhone={phone}
               initialInstitution={institution}
+              initialCareer={career}
               initialLevel={level}
             />
           </>
         )}
       </div>
 
-      {/* Módulos M1-M8 */}
+      {/* Mis trabajos */}
       {profileComplete && (
         <WorksSection
           works={(works ?? []) as AcademicWork[]}

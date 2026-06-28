@@ -2,7 +2,13 @@
 
 export type UserRole = 'student' | 'supervisor' | 'admin'
 
-export type AcademicLevel = 'grado' | 'especialización' | 'maestría' | 'doctorado'
+export type AcademicLevel =
+  | 'grado'
+  | 'posgrado'
+  | 'diplomado'
+  | 'especialización'
+  | 'masterado'
+  | 'doctorado'
 
 export type WorkType = 'tesis' | 'monografía' | 'artículo' | 'informe' | 'poster'
 
@@ -48,8 +54,12 @@ export interface Student {
   id: string
   email: string
   full_name: string
+  country: string | null
+  career: string | null
   institution: string
-  academic_level: AcademicLevel
+  academic_level: AcademicLevel | null
+  id_number: string | null
+  phone: string | null
   role: UserRole
   created_at: string
 }

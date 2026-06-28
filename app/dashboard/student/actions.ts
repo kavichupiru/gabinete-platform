@@ -13,8 +13,12 @@ export async function updateProfile(
   formData: FormData
 ): Promise<ProfileState> {
   const full_name      = (formData.get('full_name') as string).trim()
+  const country        = (formData.get('country') as string).trim()
+  const id_number      = (formData.get('id_number') as string).trim()
+  const phone          = (formData.get('phone') as string).trim()
   const institution    = (formData.get('institution') as string).trim()
-  const academic_level = formData.get('academic_level') as AcademicLevel
+  const career         = (formData.get('career') as string).trim()
+  const academic_level = formData.get('academic_level') as AcademicLevel | ''
 
   if (!full_name) return { message: 'El nombre es obligatorio.', type: 'error' }
 
@@ -24,7 +28,15 @@ export async function updateProfile(
 
   const { error } = await supabase
     .from('students')
-    .update({ full_name, institution, academic_level })
+    .update({
+      full_name,
+      country:        country || null,
+      id_number:      id_number || null,
+      phone:          phone || null,
+      institution:    institution || null,
+      career:         career || null,
+      academic_level: academic_level || null,
+    })
     .eq('id', user.id)
 
   if (error) return { message: error.message, type: 'error' }
