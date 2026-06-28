@@ -1,10 +1,37 @@
 'use server'
 
 import { redirect } from 'next/navigation'
+import { revalidatePath } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
 import type { WorkType, AcademicLevel, CitationStyle } from '@/types'
 
 export type WorkFormError = { message: string }
+export type ProfileState = { message: string; type: 'error' | 'success' }
+
+export async function updateProfile(
+  _prevState: ProfileState | undefined,
+  formData: FormData
+): Promise<ProfileState> {
+  const full_name      = (formData.get('full_name') as string).trim()
+  const institution    = (formData.get('institution') as string).trim()
+  const academic_level = formData.get('academic_level') as AcademicLevel
+
+  if (!full_name) return { message: 'El nombre es obligatorio.', type: 'error' }
+
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) redirect('/login')
+
+  const { error } = await supabase
+    .from('students')
+    .update({ full_name, institution, academic_level })
+    .eq('id', user.id)
+
+  if (error) return { message: error.message, type: 'error' }
+
+  revalidatePath('/dashboard/student')
+  return { message: 'Perfil actualizado correctamente.', type: 'success' }
+}
 
 // Crea el registro en academic_works después de que el archivo ya subió al Storage
 export async function createWork(
