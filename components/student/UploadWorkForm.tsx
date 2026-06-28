@@ -2,7 +2,7 @@
 
 import { useActionState, useState, useRef } from 'react'
 import { createClient } from '@/lib/supabase/client'
-import { createWork } from '@/app/(dashboard)/student/actions'
+import { createWork } from '@/app/dashboard/student/actions'
 import FormField from '@/components/ui/FormField'
 import SubmitButton from '@/components/ui/SubmitButton'
 
