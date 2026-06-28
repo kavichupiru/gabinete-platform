@@ -22,10 +22,13 @@ export async function signUp(
 
   const supabase = await createClient()
 
+  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://gabinete-platform.vercel.app'
+
   const { data, error } = await supabase.auth.signUp({
     email,
     password,
     options: {
+      emailRedirectTo: `${siteUrl}/auth/callback`,
       // El trigger handle_new_user() lee estos campos para crear gabinete.students
       data: { full_name, institution, academic_level },
     },
