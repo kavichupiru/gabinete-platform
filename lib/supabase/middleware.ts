@@ -35,7 +35,7 @@ export async function updateSession(request: NextRequest) {
   const { pathname } = request.nextUrl
 
   // Rutas públicas accesibles sin sesión
-  const rutasPublicas = ['/', '/login', '/register']
+  const rutasPublicas = ['/', '/login', '/register', '/auth/callback']
   const esRutaPublica = rutasPublicas.includes(pathname)
 
   // Sin sesión → redirigir al login (excepto rutas públicas)
