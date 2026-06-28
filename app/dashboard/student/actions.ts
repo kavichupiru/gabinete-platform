@@ -62,6 +62,13 @@ export async function createWork(
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect('/login')
 
+  // Obtener career del estudiante para incluirlo en el trabajo
+  const { data: student } = await supabase
+    .from('students')
+    .select('career')
+    .eq('id', user.id)
+    .single()
+
   // Insertar trabajo con status inicial pendiente_pago
   const { data: work, error: workError } = await supabase
     .from('academic_works')
@@ -71,6 +78,7 @@ export async function createWork(
       work_type,
       academic_level,
       citation_style,
+      career:         student?.career ?? null,
       status:         'pendiente_pago',
     })
     .select('id')
