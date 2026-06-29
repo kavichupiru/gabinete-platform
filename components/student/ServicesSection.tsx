@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useTransition } from 'react'
 import QuoteForm from './QuoteForm'
 import type { AcademicLevel } from '@/types'
 
@@ -40,8 +40,20 @@ const STATUS_LABELS: Record<string, { label: string; color: string }> = {
   expirada:   { label: 'Expirada', color: 'text-zinc-400 bg-zinc-50' },
 }
 
+async function handlePay(milestoneId: string) {
+  const res = await fetch('/api/stripe/checkout', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ milestone_id: milestoneId }),
+  })
+  const { url, error } = await res.json()
+  if (error) { alert(error); return }
+  window.location.href = url
+}
+
 export default function ServicesSection({ services, quotes, defaultCareer, defaultLevel }: Props) {
   const [showForm, setShowForm] = useState(false)
+  const [paying, startPaying]   = useTransition()
 
   return (
     <div className="flex flex-col gap-4">
@@ -99,11 +111,25 @@ export default function ServicesSection({ services, quotes, defaultCareer, defau
 
                 {/* Hitos */}
                 {q.payment_milestones.length > 0 && (
-                  <ul className="mt-3 space-y-1.5 border-t border-zinc-100 pt-3">
+                  <ul className="mt-3 space-y-2 border-t border-zinc-100 pt-3">
                     {q.payment_milestones.map((m, i) => (
-                      <li key={i} className="flex items-center justify-between text-xs">
-                        <span className="text-zinc-600">{m.description}</span>
-                        <span className="font-medium text-zinc-900">${m.amount.toFixed(2)}</span>
+                      <li key={i} className="flex items-center justify-between gap-2">
+                        <div className="flex items-center gap-2 text-xs">
+                          <span className={`h-2 w-2 rounded-full ${m.status === 'pagado' ? 'bg-green-500' : 'bg-zinc-300'}`} />
+                          <span className="text-zinc-600">{m.description}</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <span className="text-xs font-medium text-zinc-900">${m.amount.toFixed(2)}</span>
+                          {m.status === 'pendiente' && q.status === 'aprobada' && (
+                            <button
+                              disabled={paying}
+                              onClick={() => startPaying(() => handlePay((m as any).id))}
+                              className="rounded-lg bg-zinc-900 px-3 py-1 text-xs font-medium text-white hover:bg-zinc-700 disabled:opacity-50 transition"
+                            >
+                              Pagar
+                            </button>
+                          )}
+                        </div>
                       </li>
                     ))}
                   </ul>
