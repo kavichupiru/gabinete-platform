@@ -7,11 +7,15 @@ import FormField from '@/components/ui/FormField'
 import SubmitButton from '@/components/ui/SubmitButton'
 
 const WORK_TYPES = [
-  { value: 'tesis',      label: 'Tesis' },
-  { value: 'monografía', label: 'Monografía' },
-  { value: 'artículo',   label: 'Artículo científico' },
-  { value: 'informe',    label: 'Informe' },
-  { value: 'poster',     label: 'Póster' },
+  { value: 'tesis',           label: 'Tesis' },
+  { value: 'monografía',      label: 'Monografía' },
+  { value: 'artículo',        label: 'Artículo científico' },
+  { value: 'informe',         label: 'Informe' },
+  { value: 'poster',          label: 'Póster' },
+  { value: 'ensayo',          label: 'Ensayo' },
+  { value: 'trabajo_practico',label: 'Trabajo práctico' },
+  { value: 'manual',          label: 'Manual de procedimiento' },
+  { value: 'libro',           label: 'Libro' },
 ]
 
 const NIVELES = [
