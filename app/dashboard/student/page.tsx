@@ -2,7 +2,9 @@ import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import ProfileForm from '@/components/student/ProfileForm'
 import WorksSection from '@/components/student/WorksSection'
-import type { AcademicWork } from '@/types'
+import ServicesSection from '@/components/student/ServicesSection'
+import { getServiceCatalog, getStudentQuotes } from './quote-actions'
+import type { AcademicWork, AcademicLevel } from '@/types'
 
 export default async function StudentDashboardPage() {
   const supabase = await createClient()
@@ -20,6 +22,11 @@ export default async function StudentDashboardPage() {
     .from('academic_works')
     .select('id, title, work_type, academic_level, status, created_at')
     .order('created_at', { ascending: false })
+
+  const [services, quotes] = await Promise.all([
+    getServiceCatalog(),
+    getStudentQuotes(),
+  ])
 
   const fullName    = student?.full_name?.trim() || ''
   const email       = student?.email || user.email || ''
@@ -111,6 +118,16 @@ export default async function StudentDashboardPage() {
           </>
         )}
       </div>
+
+      {/* Servicios y cotizaciones */}
+      {profileComplete && (
+        <ServicesSection
+          services={services}
+          quotes={quotes as any}
+          defaultCareer={career}
+          defaultLevel={level as AcademicLevel | ''}
+        />
+      )}
 
       {/* Mis trabajos */}
       {profileComplete && (
