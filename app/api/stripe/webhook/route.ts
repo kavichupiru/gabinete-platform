@@ -29,7 +29,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ received: true })
   }
 
-  const session  = event.data.object as Stripe.CheckoutSession
+  const session  = event.data.object as Stripe.Checkout.Session
   const meta     = session.metadata!
 
   const milestone_id    = meta.milestone_id
