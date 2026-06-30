@@ -34,11 +34,15 @@ const LEVEL_OPTIONS: { value: AcademicLevel; label: string; group: string }[] = 
 ]
 
 const WORK_TYPES: { value: WorkType; label: string }[] = [
-  { value: 'tesis',      label: 'Tesis' },
-  { value: 'monografía', label: 'Monografía' },
-  { value: 'artículo',   label: 'Artículo científico' },
-  { value: 'informe',    label: 'Informe' },
-  { value: 'poster',     label: 'Póster académico' },
+  { value: 'tesis',           label: 'Tesis' },
+  { value: 'monografía',      label: 'Monografía' },
+  { value: 'artículo',        label: 'Artículo científico' },
+  { value: 'informe',         label: 'Informe' },
+  { value: 'poster',          label: 'Póster académico' },
+  { value: 'ensayo',          label: 'Ensayo' },
+  { value: 'trabajo_practico',label: 'Trabajo práctico' },
+  { value: 'manual',          label: 'Manual de procedimiento' },
+  { value: 'libro',           label: 'Libro' },
 ]
 
 function getLevelGroup(level: AcademicLevel): 'grado' | 'posgrado' | 'doctorado' {
