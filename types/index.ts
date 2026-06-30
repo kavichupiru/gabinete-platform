@@ -10,7 +10,7 @@ export type AcademicLevel =
   | 'masterado'
   | 'doctorado'
 
-export type WorkType = 'tesis' | 'monografía' | 'artículo' | 'informe' | 'poster'
+export type WorkType = 'tesis' | 'monografía' | 'artículo' | 'informe' | 'poster' | 'ensayo' | 'trabajo_practico' | 'manual' | 'libro'
 
 export type CitationStyle = 'vancouver' | 'apa7' | 'iica' | 'chicago' | 'mla' | 'iso690'
 
