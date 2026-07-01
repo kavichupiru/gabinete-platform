@@ -19,6 +19,8 @@ interface AuditoriaInfo {
 export async function draftRedaction(work: WorkInfo, auditoria: AuditoriaInfo): Promise<string> {
   const prompt = `Sos un asesor académico. A partir del siguiente diagnóstico de auditoría, redactá un informe de retroalimentación claro y accionable para el estudiante, en español, organizado en secciones: "Resumen del diagnóstico", "Puntos a corregir" y "Recomendaciones para la reformulación". No inventés datos que no estén en el diagnóstico.
 
+IMPORTANTE: Escribí en texto plano, sin ningún formato Markdown. No uses asteriscos para negrita ni cursiva, no uses guiones ni líneas horizontales (---) como separadores, no uses ">" para citas, no uses "#" para títulos. Los títulos de sección van solos en su propia línea, en mayúsculas. Los ítems de una lista van en líneas separadas, numerados con "1)", "2)", etc., sin guiones ni viñetas.
+
 Trabajo: "${work.title}" (${work.work_type}, ${work.academic_level}, carrera: ${work.career ?? 'no especificada'}, norma: ${work.citation_style})
 
 Resumen ejecutivo de la auditoría:
@@ -52,17 +54,29 @@ export async function buildDocxBuffer(work: WorkInfo, bodyText: string): Promise
     new Paragraph({ text: '' }),
   ]
 
-  for (const line of bodyText.split('\n')) {
-    const trimmed = line.trim()
+  for (const rawLine of bodyText.split('\n')) {
+    let trimmed = rawLine.trim()
+
+    // Defensa contra restos de Markdown si el modelo no siguió la instrucción
+    if (/^[-_*]{3,}$/.test(trimmed)) continue // línea horizontal
+    trimmed = trimmed
+      .replace(/^#+\s*/, '')
+      .replace(/^>\s*/, '')
+      .replace(/^[-*]\s+/, '')
+      .replace(/\*\*(.+?)\*\*/g, '$1')
+      .replace(/\*(.+?)\*/g, '$1')
+
     if (!trimmed) {
       paragraphs.push(new Paragraph({ text: '' }))
       continue
     }
-    if (trimmed.startsWith('#') || trimmed === trimmed.toUpperCase() && trimmed.length < 60) {
-      paragraphs.push(new Paragraph({ text: trimmed.replace(/^#+\s*/, ''), heading: HeadingLevel.HEADING_2 }))
-    } else {
-      paragraphs.push(new Paragraph({ text: trimmed }))
-    }
+
+    const isHeading = trimmed === trimmed.toUpperCase() && /[A-ZÁÉÍÓÚÑ]/.test(trimmed) && trimmed.length < 60
+    paragraphs.push(
+      isHeading
+        ? new Paragraph({ text: trimmed, heading: HeadingLevel.HEADING_2 })
+        : new Paragraph({ text: trimmed })
+    )
   }
 
   const doc = new Document({
