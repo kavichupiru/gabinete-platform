@@ -56,15 +56,15 @@ export async function approveWork(workId: string) {
     })
     const docxBuffer = await buildDocxBuffer(work, bodyText)
 
-    const path = `${work.student_id}/redactado-${workId}.docx`
+    const path = `${work.student_id}/redactado-${workId}-${Date.now()}.docx`
     const { error: uploadError } = await admin.storage
       .from('documents')
       .upload(path, docxBuffer, {
         contentType: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-        upsert: true,
       })
 
     if (uploadError) return { status: 'error' as const, message: uploadError.message }
+    console.log('[approveWork] docx generado y subido:', path)
 
     const { data: existingAudit } = await admin
       .from('audits')

@@ -51,6 +51,9 @@ export async function buildDocxBuffer(work: WorkInfo, bodyText: string): Promise
     new Paragraph({
       children: [new TextRun({ text: 'Informe de retroalimentación — Gabinete de Estudios', italics: true })],
     }),
+    new Paragraph({
+      children: [new TextRun({ text: `Generado: ${new Date().toISOString()}`, size: 16, color: '999999' })],
+    }),
     new Paragraph({ text: '' }),
   ]
 
