@@ -1,4 +1,5 @@
 import type { AcademicWork } from '@/types'
+import DownloadDocButton from './DownloadDocButton'
 
 const STATUS_LABEL: Record<string, string> = {
   pendiente_pago: 'Pendiente de pago',
@@ -52,6 +53,9 @@ export default function WorksTable({ works }: Props) {
             <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-zinc-500">
               Fecha
             </th>
+            <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-zinc-500">
+              Informe
+            </th>
           </tr>
         </thead>
         <tbody className="divide-y divide-zinc-100">
@@ -77,6 +81,9 @@ export default function WorksTable({ works }: Props) {
                   month: 'short',
                   year: 'numeric',
                 })}
+              </td>
+              <td className="px-4 py-3">
+                {work.status === 'entregado' && <DownloadDocButton workId={work.id} />}
               </td>
             </tr>
           ))}

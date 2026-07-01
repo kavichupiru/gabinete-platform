@@ -3,6 +3,8 @@
 import { redirect } from 'next/navigation'
 import { revalidatePath } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin'
+import { draftRedaction, buildDocxBuffer } from '@/lib/redactor'
 
 export async function getWorksInAuditoria() {
   const supabase = await createClient()
@@ -27,7 +29,64 @@ export async function approveWork(workId: string) {
   const { data: { user } } = await supabase.auth.getUser()
   if (!user) redirect('/login')
 
-  const { error } = await supabase
+  const admin = createAdminClient()
+
+  const { data: work, error: workError } = await admin
+    .from('academic_works')
+    .select('id, student_id, title, work_type, academic_level, career, citation_style')
+    .eq('id', workId)
+    .single()
+
+  if (workError || !work) return { status: 'error' as const, message: workError?.message ?? 'Trabajo no encontrado.' }
+
+  const { data: auditoria } = await admin
+    .from('auditorias')
+    .select('resumen_ejecutivo, tabla_confianza, fallas_criticas, recomendaciones')
+    .eq('proyecto_id', workId)
+    .order('created_at', { ascending: false })
+    .limit(1)
+    .maybeSingle()
+
+  try {
+    const bodyText = await draftRedaction(work, auditoria ?? {
+      resumen_ejecutivo: null,
+      tabla_confianza: null,
+      fallas_criticas: null,
+      recomendaciones: null,
+    })
+    const docxBuffer = await buildDocxBuffer(work, bodyText)
+
+    const path = `${work.student_id}/redactado-${workId}.docx`
+    const { error: uploadError } = await admin.storage
+      .from('documents')
+      .upload(path, docxBuffer, {
+        contentType: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+        upsert: true,
+      })
+
+    if (uploadError) return { status: 'error' as const, message: uploadError.message }
+
+    const { data: existingAudit } = await admin
+      .from('audits')
+      .select('id')
+      .eq('work_id', workId)
+      .maybeSingle()
+
+    if (existingAudit) {
+      await admin
+        .from('audits')
+        .update({ output_docx_url: path, diagnosis_json: auditoria ?? null })
+        .eq('id', existingAudit.id)
+    } else {
+      await admin
+        .from('audits')
+        .insert({ work_id: workId, input_document_url: '', output_docx_url: path, diagnosis_json: auditoria ?? null })
+    }
+  } catch (err: any) {
+    return { status: 'error' as const, message: `Error al generar el documento: ${err.message}` }
+  }
+
+  const { error } = await admin
     .from('academic_works')
     .update({ status: 'entregado' })
     .eq('id', workId)
@@ -35,6 +94,7 @@ export async function approveWork(workId: string) {
   if (error) return { status: 'error' as const, message: error.message }
 
   revalidatePath('/dashboard/supervisor')
+  revalidatePath('/dashboard/student')
   return { status: 'success' as const }
 }
 
