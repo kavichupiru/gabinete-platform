@@ -8,6 +8,27 @@ import type { WorkType, AcademicLevel, CitationStyle } from '@/types'
 export type WorkFormError = { message: string }
 export type ProfileState = { message: string; type: 'error' | 'success' }
 
+export async function getSignedDocUrl(workId: string): Promise<string | null> {
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) redirect('/login')
+
+  const { data: audit } = await supabase
+    .from('audits')
+    .select('output_docx_url')
+    .eq('work_id', workId)
+    .maybeSingle()
+
+  if (!audit?.output_docx_url) return null
+
+  const { data, error } = await supabase.storage
+    .from('documents')
+    .createSignedUrl(audit.output_docx_url, 60 * 10)
+
+  if (error) return null
+  return data.signedUrl
+}
+
 export async function updateProfile(
   _prevState: ProfileState | undefined,
   formData: FormData
