@@ -1,0 +1,1189 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "auditoria-orquestador",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "caa13aec-cfd4-4930-993c-af072a3806ea",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "position": [
+        -576,
+        208
+      ],
+      "typeVersion": 2,
+      "webhookId": "4120d721-ef10-4f2d-92ca-168360b419ca"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"status\": \"async_processing\",\n  \"mensaje\": \"Auditoría iniciada para {{ $json.body.record.career }}.\",\n  \"proyecto_id\": \"{{ $json.body.record.id }}\",\n  \"timestamp\": \"{{ new Date().toISOString() }}\"\n}",
+        "options": {}
+      },
+      "id": "55520d69-f397-49fe-87e8-1b090aa61a03",
+      "name": "Respond to Webhook",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "position": [
+        -320,
+        64
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": false,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "leftValue": "={{ $json.body.record.status }}",
+              "rightValue": "en_auditoría",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              },
+              "id": "filter-status"
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "8b78fc4e-3e7a-44bd-ad04-a905ac415a97",
+      "name": "Filtro — Solo en_auditoria",
+      "type": "n8n-nodes-base.filter",
+      "position": [
+        -576,
+        432
+      ],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": false,
+                  "leftValue": "",
+                  "typeValidation": "loose",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.body.record.career }}",
+                    "rightValue": "Derecho",
+                    "operator": {
+                      "type": "string",
+                      "operation": "contains"
+                    },
+                    "id": "rule-derecho"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Derecho"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": false,
+                  "leftValue": "",
+                  "typeValidation": "loose",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.body.record.career }}",
+                    "rightValue": "Seguridad",
+                    "operator": {
+                      "type": "string",
+                      "operation": "contains"
+                    },
+                    "id": "rule-seguridad"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Seguridad Ciudadana"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": false,
+                  "leftValue": "",
+                  "typeValidation": "loose",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.body.record.career }}",
+                    "rightValue": "Enfermería",
+                    "operator": {
+                      "type": "string",
+                      "operation": "contains"
+                    },
+                    "id": "rule-salud"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Salud/Enfermería"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": false,
+                  "leftValue": "",
+                  "typeValidation": "loose",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.body.record.career }}",
+                    "rightValue": "Arquitectura",
+                    "operator": {
+                      "type": "string",
+                      "operation": "contains"
+                    },
+                    "id": "rule-arquitectura"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Arquitectura"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": false,
+                  "leftValue": "",
+                  "typeValidation": "loose",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.body.record.career }}",
+                    "rightValue": "Ingeniería",
+                    "operator": {
+                      "type": "string",
+                      "operation": "contains"
+                    },
+                    "id": "rule-ingenieria"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Ingeniería"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": false,
+                  "leftValue": "",
+                  "typeValidation": "loose",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.body.record.career }}",
+                    "rightValue": "Comercial",
+                    "operator": {
+                      "type": "string",
+                      "operation": "contains"
+                    },
+                    "id": "rule-economia-1"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Ciencias Económicas"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": false,
+                  "leftValue": "",
+                  "typeValidation": "loose",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.body.record.career }}",
+                    "rightValue": "Marketing",
+                    "operator": {
+                      "type": "string",
+                      "operation": "contains"
+                    },
+                    "id": "rule-economia-2"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "Ciencias Económicas"
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": "extra"
+        }
+      },
+      "id": "5db0487a-92db-4e1c-a904-f2fd1af078a0",
+      "name": "Switch",
+      "type": "n8n-nodes-base.switch",
+      "position": [
+        -320,
+        240
+      ],
+      "typeVersion": 3
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"status\": \"error\",\n  \"mensaje\": \"Disciplina no reconocida: {{ $json.body.record.career }}. Valores válidos: Derecho, Seguridad, Enfermería, Arquitectura, Ingeniería, Comercial, Marketing.\",\n  \"timestamp\": \"{{ new Date().toISOString() }}\"\n}",
+        "options": {}
+      },
+      "id": "22dfc255-01b9-4a44-9ea2-968734e9ebab",
+      "name": "Error — Disciplina no reconocida",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "position": [
+        -256,
+        656
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "55b3b8a0-838a-4a54-af53-a34a6621413e",
+      "name": "Google Gemini Chat Model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "position": [
+        -48,
+        832
+      ],
+      "typeVersion": 1,
+      "credentials": {
+        "googlePalmApi": {
+          "id": "tD0Ls151rSDabv0H",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "model": "=claude-sonnet-4-6",
+        "options": {
+          "temperature": 0
+        }
+      },
+      "id": "518afd0d-fe5e-4370-b880-79887f6862c2",
+      "name": "Anthropic Chat Model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatAnthropic",
+      "position": [
+        320,
+        832
+      ],
+      "typeVersion": 1,
+      "credentials": {
+        "anthropicApi": {
+          "id": "3ThA4OSD4Qdimmeb",
+          "name": "Anthropic account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=[DATOS DEL PROYECTO]\n- Título: {{ $json.body.record.title }}\n- Disciplina: {{ $json.body.record.career }}\n- Nivel Académico: {{ $json.body.record.academic_level }}\n- Norma de Citación: {{ $json.body.record.citation_style }}\n- Tipo: {{ $json.body.record.work_type }}\n\n[ROL — ANALISTA CIENCIAS JURÍDICAS]\nSos el Analista Metodológico especializado en Ciencias Jurídicas del Gabinete de Estudios. Tu tarea es el escaneo estructural bajo epistemología jurídica: método dogmático, hermenéutico, analítico, comparado o iusfilosófico. NO aplicarás criterios de investigación empírica (variables, muestras, poblaciones).\n\n[CRITERIOS ESPECÍFICOS DE AUDITORÍA JURÍDICA]\n1. PROBLEMA JURÍDICO: ¿El título refleja una laguna normativa, antinomia, ineficacia de norma o necesidad de reforma? Si el problema es sociológico sin relevancia normativa → ALERTA CRÍTICA.\n2. OBJETO JURÍDICO: ¿El título identifica el objeto de estudio (institución jurídica, norma, jurisprudencia, tratado, principio)? ¿Es preciso o genérico?\n3. MÉTODO JURÍDICO: ¿El tipo de documento es compatible con el método implícito? (exégesis, análisis comparado, estudio de caso jurisprudencial, etc.)\n4. FUENTES JURÍDICAS: ¿El tema permite acceso a fuentes primarias (legislación nacional, jurisprudencia de la Corte Suprema de Paraguay, tratados internacionales ratificados)?\n5. ERRORES FORMALES: Títulos con sufijos de versión (v1, v2), terminología ambigua entre norma jurídica y norma académica de citación.\n\n[AJUSTE DE RIGOR SEGÚN TIPO DE TRABAJO — work_type: {{ $json.body.record.work_type }}]\nAdaptá tu exigencia según el tipo de documento declarado, no apliques siempre el estándar de tesis:\n- tesis: exigí pregunta de investigación, hipótesis u objetivo original, y diseño metodológico completo.\n- monografía / artículo: exigí problema delimitado y método coherente, sin exigir aporte original al nivel de una tesis.\n- informe: exigí estructura clara y coherencia con su propósito declarado. NO señales como falla la ausencia de hipótesis, muestra o comité de ética, salvo que el propio informe describa una investigación con sujetos humanos.\n- ensayo: exigí una tesis argumentativa y desarrollo lógico con fuentes. NO esperes diseño metodológico ni instrumento de recolección de datos.\n- trabajo_practico: exigí coherencia entre la consigna y el desarrollo. NO esperes marco teórico extenso ni hipótesis.\n- manual: es un documento de referencia operativa o pedagógica (procedimientos, protocolos, guías). Evaluá completitud de los pasos, claridad para el destinatario y utilidad práctica. NO es un trabajo de investigación: no busques pregunta de investigación, hipótesis, muestra, instrumento validado ni comité de ética.\n- libro: evaluá estructura por capítulos y solidez de fuentes; el nivel de originalidad depende del propósito declarado (divulgación, texto de cátedra o aporte original).\n- poster: evaluá síntesis y claridad visual-conceptual; no es un documento de investigación completo en sí mismo.\n\nSi work_type es 'manual', 'ensayo', 'trabajo_practico', 'libro' o 'poster', NO reportes como alerta crítica la ausencia de hipótesis, muestra, instrumento validado, comité de ética o diseño experimental — esos requisitos son exclusivos de 'tesis' y, en menor medida, 'monografía'/'artículo'.\n\n[INSTRUCCIÓN DE SALIDA]\nReporte técnico con: (1) Naturaleza del problema jurídico, (2) Método implícito y su adecuación, (3) Viabilidad de fuentes, (4) Alertas críticas. Directo y técnico para el Supervisor.",
+        "messages": {
+          "messageValues": [
+            {
+              "message": "=Sos el Analista Metodológico de Ciencias Jurídicas del Gabinete de Estudios.\n\nDatos del proyecto:\n- Título: {{ $json.body.record.title }}\n- Disciplina: {{ $json.body.record.career }}\n- Nivel: {{ $json.body.record.academic_level }}\n\nAnaliza desde la epistemología jurídica (NO empírica):\n1. ¿El título plantea un problema jurídico identificable (laguna, antinomia, ineficacia normativa)?\n2. ¿El objeto de estudio es una institución, norma, jurisprudencia o principio jurídico concreto?\n3. ¿El método implícito (dogmático, hermenéutico, comparado) es coherente con el tipo de documento?\n4. ¿Las fuentes jurídicas necesarias son accesibles en Paraguay (legislación, jurisprudencia CSJ, tratados ratificados)?\n5. Alertas formales: vaguedad conceptual, confusión entre método jurídico y metodología empírica.\n\nReporte directo y técnico para el Supervisor Metodológico Senior."
+            }
+          ]
+        }
+      },
+      "id": "d5cc37b4-a061-4d50-832b-3edff21c73dc",
+      "name": "Gemini - Analista Derecho",
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "position": [
+        -48,
+        32
+      ],
+      "typeVersion": 1.5
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=[CONTEXTO ORIGINAL — WEBHOOK]\nProyecto: {{ $('Webhook').item.json.body.record.title }}\nNivel: {{ $('Webhook').item.json.body.record.academic_level }}\nNorma: {{ $('Webhook').item.json.body.record.citation_style }}\nTipo de Documento: {{ $('Webhook').item.json.body.record.work_type }}\n\n[INFORME TÉCNICO DEL ANALISTA GEMINI]\n{{ $json.text }}\n\n[INSTRUCCIÓN DE DICTAMEN]\nBasado en los datos del proyecto y el informe de Gemini, emite el veredicto final en formato JSON estricto.\nSi el nivel es Posgrado, aplica el filtro de calidad más riguroso posible.",
+        "options": {
+          "systemMessage": "=System: Eres el Supervisor Metodológico Senior del Gabinete de Estudios especializado en Ciencias Jurídicas y Derecho, bajo coordinación del Lic. Dionicio Alderete Gray (FEO-UNA, Paraguay).\n\nOperás bajo el Superprompt Institucional v1.0 del Gabinete de Estudios. En Ciencias Jurídicas, la epistemología es radicalmente diferente a las ciencias empíricas: NO buscarás variables experimentales, muestras estadísticas ni poblaciones de campo. Evaluarás bajo el método dogmático, hermenéutico, analítico, comparado o iusfilosófico.\n\nVARIABLES DEL PROYECTO (desde Webhook):\n- Título: {{ $('Webhook').item.json.body.record.title }}\n- Disciplina: {{ $('Webhook').item.json.body.record.career }}\n- Nivel: {{ $('Webhook').item.json.body.record.academic_level }}\n- Tipo: {{ $('Webhook').item.json.body.record.work_type }}\n- Norma: {{ $('Webhook').item.json.body.record.citation_style }}\n\nCRITERIOS DE EVALUACIÓN — CIENCIAS JURÍDICAS:\n1. Problema jurídico: laguna normativa, antinomia, ineficacia de norma, necesidad de reforma. Si es solo sociológico → FALLA CRÍTICA\n2. Objeto jurídico: institución, norma, jurisprudencia, principio, tratado — debe ser identificable y preciso\n3. Método jurídico: dogmático, hermenéutico, exegético, comparado, iusfilosófico — coherente con el objeto\n4. Fuentes jurídicas: legislación paraguaya, CSJ, tratados ratificados, doctrina regional — accesibles y verificables\n5. Marco normativo vs. teórico: no transcribir leyes, sino analizarlas hermenéuticamente con jurisprudencia\n\n[AJUSTE DE RIGOR SEGÚN TIPO DE TRABAJO — work_type declarado: {{ $('Webhook').item.json.body.record.work_type }}]\nNo apliques el mismo nivel de exigencia a todo tipo de documento. Adaptá los criterios según el tipo:\n- tesis: exige pregunta de investigación, hipótesis u objetivo original, diseño metodológico completo, y máxima exigencia de esta disciplina.\n- monografía / artículo: exige problema delimitado y método coherente, pero NO exige aporte original al conocimiento al nivel de una tesis.\n- informe: exige estructura clara y coherencia entre lo reportado y su propósito. NO exige hipótesis de investigación, cálculo muestral ni comité de ética, salvo que el propio informe describa una investigación con sujetos humanos.\n- ensayo: exige tesis argumentativa clara y desarrollo lógico con fuentes. NO exige diseño metodológico ni instrumento de recolección de datos.\n- trabajo_practico: exige coherencia entre la consigna y el desarrollo, y aplicación correcta de conceptos. NO exige marco teórico extenso ni hipótesis.\n- manual: es un documento de referencia operativa o pedagógica (procedimientos, protocolos, guías). Evaluá completitud de los pasos, claridad para el destinatario y utilidad práctica. NO exige pregunta de investigación, hipótesis, muestra, instrumento validado ni comité de ética — esos criterios NO APLICAN a un manual.\n- libro: evaluá estructura por capítulos y solidez de fuentes; el nivel de originalidad depende del propósito declarado, no asumas por defecto el estándar de tesis.\n- poster: evaluá síntesis y claridad visual-conceptual; no es un documento de investigación completo en sí mismo.\n\nSi work_type es 'manual', 'ensayo', 'trabajo_practico', 'libro' o 'poster', NO reportes como falla crítica la ausencia de hipótesis, muestra, instrumento validado, comité de ética o diseño experimental — esos requisitos son exclusivos de 'tesis' y, en menor medida, 'monografía'/'artículo'.\n\nOBLIGACIÓN DE FORMATO DE SALIDA:\nDevolver ÚNICAMENTE un objeto JSON puro y válido (sin ```json):\n\n{\n  \"resumen_ejecutivo\": \"Dictamen jurídico sobre viabilidad de la investigación (máx. 250 palabras)\",\n  \"tabla_confianza\": {\n    \"coherencia_titulo_problema\": 4.5,\n    \"delimitacion_metodologica\": 3.8,\n    \"viabilidad_ejecucion\": 4.2,\n    \"promedio_general\": 4.17\n  },\n  \"fallas_criticas\": {\"errores\": [\"Fallas que invalidan el trabajo jurídico\"]},\n  \"fallas_menores\": {\"observaciones\": [\"Observaciones de calidad\"]},\n  \"fortalezas\": [\"Solo las genuinas\"],\n  \"recomendaciones\": [\"Priorizadas por impacto\"],\n  \"ciclo_n\": 1,\n  \"modulo\": \"Ciencias Jurídicas\",\n  \"norma_citacion_validada\": \"APA 7 / Cita jurídica\"\n}"
+        }
+      },
+      "id": "8008f84e-ebd3-4f87-a81f-0734b7f64e76",
+      "name": "Claude - Supervisor Derecho",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "position": [
+        256,
+        32
+      ],
+      "typeVersion": 1.7
+    },
+    {
+      "parameters": {
+        "jsCode": "// ── GABINETE DE ESTUDIOS — Code Node v2.0 ──────────────────────────────────\nlet textoCrudo = $json.output || '';\nlet textoLimpio = textoCrudo\n  .replace(/```json\\s*/gi, '')\n  .replace(/```\\s*/g, '')\n  .replace(/^\\s*=+\\s*/g, '')\n  .trim();\nlet resultado;\ntry {\n  resultado = JSON.parse(textoLimpio);\n} catch (e) {\n  resultado = {\n    resumen_ejecutivo: 'ERROR DE PARSEO: Claude no devolvió JSON válido. Revisar output.',\n    tabla_confianza: {coherencia_titulo_problema: 0, delimitacion_metodologica: 0, viabilidad_ejecucion: 0, promedio_general: 0},\n    fallas_criticas: {errores: ['OUTPUT_INVALIDO: ' + e.message, 'Texto recibido: ' + textoCrudo.substring(0, 500)]},\n    fallas_menores: {observaciones: []},\n    fortalezas: [],\n    recomendaciones: ['Revisar el prompt de Claude y re-ejecutar el workflow'],\n    ciclo_n: 1,\n    modulo: 'ERROR',\n    norma_citacion_validada: 'N/A',\n    _parse_error: true,\n    _raw_output: textoCrudo.substring(0, 1000)\n  };\n}\nif (!resultado.ciclo_n) resultado.ciclo_n = 1;\nreturn resultado;"
+      },
+      "id": "677253bb-8638-46ca-bdd9-5dfdbcd0c6c8",
+      "name": "Code - Parser Derecho",
+      "type": "n8n-nodes-base.code",
+      "position": [
+        672,
+        32
+      ],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=[DATOS DEL PROYECTO]\n- Título: {{ $json.body.record.title }}\n- Disciplina: {{ $json.body.record.career }}\n- Nivel Académico: {{ $json.body.record.academic_level }}\n- Norma de Citación: {{ $json.body.record.citation_style }}\n- Tipo: {{ $json.body.record.work_type }}\n\n[ROL — ANALISTA SEGURIDAD NACIONAL/CIUDADANA]\nSos el Analista Metodológico especializado en Seguridad Pública, Ciudadana y Ciencias Policiales/Militares del Gabinete de Estudios. Tu tarea es el escaneo estructural inicial bajo criterios operativos, tácticos o de gestión de riesgos institucionales.\n\n[CRITERIOS ESPECÍFICOS DE AUDITORÍA EN SEGURIDAD]\n1. VIABILIDAD DE ACCESO A FUENTES (CRÍTICO): ¿El problema requiere datos reservados, secreto de Estado o información clasificada? Si es así → FALLA CRÍTICA de ejecución. El estudiante debe poder acceder legalmente a las fuentes.\n2. DELIMITACIÓN INSTITUCIONAL: ¿El título especifica el ámbito de aplicación (comisarías, unidades, zonas, dependencias)? La vaguedad institucional es FALLA MENOR pero recurrente.\n3. ENFOQUE METODOLÓGICO: ¿El diseño implícito es diagnóstico, descriptivo, evaluativo o propositivo? ¿Es coherente con el tipo de problema de seguridad planteado?\n4. SENSIBILIDAD ÉTICA Y POLÍTICA: ¿El tema involucra datos de víctimas, informantes, operativos activos o estrategias de inteligencia? Evaluar riesgo institucional.\n5. ERRORES FORMALES: Títulos con sufijos de versión, términos no definibles sin acotación.\n\n[AJUSTE DE RIGOR SEGÚN TIPO DE TRABAJO — work_type: {{ $json.body.record.work_type }}]\nAdaptá tu exigencia según el tipo de documento declarado, no apliques siempre el estándar de tesis:\n- tesis: exigí pregunta de investigación, hipótesis u objetivo original, y diseño metodológico completo.\n- monografía / artículo: exigí problema delimitado y método coherente, sin exigir aporte original al nivel de una tesis.\n- informe: exigí estructura clara y coherencia con su propósito declarado. NO señales como falla la ausencia de hipótesis, muestra o comité de ética, salvo que el propio informe describa una investigación con sujetos humanos.\n- ensayo: exigí una tesis argumentativa y desarrollo lógico con fuentes. NO esperes diseño metodológico ni instrumento de recolección de datos.\n- trabajo_practico: exigí coherencia entre la consigna y el desarrollo. NO esperes marco teórico extenso ni hipótesis.\n- manual: es un documento de referencia operativa o pedagógica (procedimientos, protocolos, guías). Evaluá completitud de los pasos, claridad para el destinatario y utilidad práctica. NO es un trabajo de investigación: no busques pregunta de investigación, hipótesis, muestra, instrumento validado ni comité de ética.\n- libro: evaluá estructura por capítulos y solidez de fuentes; el nivel de originalidad depende del propósito declarado (divulgación, texto de cátedra o aporte original).\n- poster: evaluá síntesis y claridad visual-conceptual; no es un documento de investigación completo en sí mismo.\n\nSi work_type es 'manual', 'ensayo', 'trabajo_practico', 'libro' o 'poster', NO reportes como alerta crítica la ausencia de hipótesis, muestra, instrumento validado, comité de ética o diseño experimental — esos requisitos son exclusivos de 'tesis' y, en menor medida, 'monografía'/'artículo'.\n\n[INSTRUCCIÓN DE SALIDA]\nReporte técnico con: (1) Diagnóstico de viabilidad operativa, (2) Accesibilidad de fuentes, (3) Sensibilidad ética/política, (4) Alertas críticas. Directo y técnico para el Supervisor.",
+        "messages": {
+          "messageValues": [
+            {
+              "message": "=Sos el Analista Metodológico de Seguridad Nacional/Ciudadana del Gabinete de Estudios.\n\nDatos del proyecto:\n- Título: {{ $json.body.record.title }}\n- Disciplina: {{ $json.body.record.career }}\n- Nivel: {{ $json.body.record.academic_level }}\n\nAnaliza desde la perspectiva operativa y de seguridad:\n1. ¿Las fuentes necesarias son accesibles legalmente? ¿Requiere datos clasificados o reservados? (CRÍTICO)\n2. ¿El ámbito institucional está delimitado (unidad, zona, dependencia)?\n3. ¿El método propuesto (diagnóstico, evaluativo, descriptivo) es viable con el acceso real disponible?\n4. ¿El tema involucra datos sensibles de víctimas, operativos activos o inteligencia?\n5. Alertas formales: vaguedad del objeto de estudio, términos sin definición operacional.\n\nReporte directo y técnico para el Supervisor Metodológico Senior."
+            }
+          ]
+        }
+      },
+      "id": "4a8ca471-a733-4215-ba01-7e9a0a8eb2ed",
+      "name": "Gemini - Analista Seguridad",
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "position": [
+        32,
+        208
+      ],
+      "typeVersion": 1.5
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=[CONTEXTO ORIGINAL — WEBHOOK]\nProyecto: {{ $('Webhook').item.json.body.record.title }}\nNivel: {{ $('Webhook').item.json.body.record.academic_level }}\nNorma: {{ $('Webhook').item.json.body.record.citation_style }}\nTipo de Documento: {{ $('Webhook').item.json.body.record.work_type }}\n\n[INFORME TÉCNICO DEL ANALISTA GEMINI]\n{{ $json.text }}\n\n[INSTRUCCIÓN DE DICTAMEN]\nBasado en los datos del proyecto y el informe de Gemini, emite el veredicto final en formato JSON estricto.\nSi el nivel es Posgrado, aplica el filtro de calidad más riguroso posible.",
+        "options": {
+          "systemMessage": "=System: Eres el Supervisor Metodológico Senior del Gabinete de Estudios especializado en Seguridad Nacional, Seguridad Ciudadana y Ciencias Policiales/Militares, bajo coordinación del Lic. Dionicio Alderete Gray (FEO-UNA, Paraguay).\n\nVARIABLES DEL PROYECTO (desde Webhook):\n- Título: {{ $('Webhook').item.json.body.record.title }}\n- Disciplina: {{ $('Webhook').item.json.body.record.career }}\n- Nivel: {{ $('Webhook').item.json.body.record.academic_level }}\n- Tipo: {{ $('Webhook').item.json.body.record.work_type }}\n- Norma: {{ $('Webhook').item.json.body.record.citation_style }}\n\nCRITERIOS DE EVALUACIÓN — SEGURIDAD NACIONAL/CIUDADANA:\n1. ACCESO A FUENTES (CRÍTICO): datos reservados, secreto de Estado o clasificados sin acceso legal = FALLA CRÍTICA de ejecución inmediata\n2. Delimitación institucional: comisarías, unidades, zonas, dependencias específicas\n3. Enfoque diagnóstico: herramientas viables para análisis de riesgo, prevención del delito o doctrina táctica\n4. Sensibilidad ética/política: datos de víctimas, informantes, operativos activos → evaluar riesgo institucional\n5. Coherencia operativa: nivel académico y tipo de documento coherentes con la complejidad del problema\n\n[AJUSTE DE RIGOR SEGÚN TIPO DE TRABAJO — work_type declarado: {{ $('Webhook').item.json.body.record.work_type }}]\nNo apliques el mismo nivel de exigencia a todo tipo de documento. Adaptá los criterios según el tipo:\n- tesis: exige pregunta de investigación, hipótesis u objetivo original, diseño metodológico completo, y máxima exigencia de esta disciplina.\n- monografía / artículo: exige problema delimitado y método coherente, pero NO exige aporte original al conocimiento al nivel de una tesis.\n- informe: exige estructura clara y coherencia entre lo reportado y su propósito. NO exige hipótesis de investigación, cálculo muestral ni comité de ética, salvo que el propio informe describa una investigación con sujetos humanos.\n- ensayo: exige tesis argumentativa clara y desarrollo lógico con fuentes. NO exige diseño metodológico ni instrumento de recolección de datos.\n- trabajo_practico: exige coherencia entre la consigna y el desarrollo, y aplicación correcta de conceptos. NO exige marco teórico extenso ni hipótesis.\n- manual: es un documento de referencia operativa o pedagógica (procedimientos, protocolos, guías). Evaluá completitud de los pasos, claridad para el destinatario y utilidad práctica. NO exige pregunta de investigación, hipótesis, muestra, instrumento validado ni comité de ética — esos criterios NO APLICAN a un manual.\n- libro: evaluá estructura por capítulos y solidez de fuentes; el nivel de originalidad depende del propósito declarado, no asumas por defecto el estándar de tesis.\n- poster: evaluá síntesis y claridad visual-conceptual; no es un documento de investigación completo en sí mismo.\n\nSi work_type es 'manual', 'ensayo', 'trabajo_practico', 'libro' o 'poster', NO reportes como falla crítica la ausencia de hipótesis, muestra, instrumento validado, comité de ética o diseño experimental — esos requisitos son exclusivos de 'tesis' y, en menor medida, 'monografía'/'artículo'.\n\nOBLIGACIÓN DE FORMATO DE SALIDA:\nDevolver ÚNICAMENTE un objeto JSON puro y válido (sin ```json):\n\n{\n  \"resumen_ejecutivo\": \"Dictamen estratégico sobre viabilidad operativa y metodológica (máx. 250 palabras)\",\n  \"tabla_confianza\": {\"coherencia_titulo_problema\": 4.5, \"delimitacion_metodologica\": 3.8, \"viabilidad_ejecucion\": 4.2, \"promedio_general\": 4.17},\n  \"fallas_criticas\": {\"errores\": [\"Fallas que invalidan el trabajo\"]},\n  \"fallas_menores\": {\"observaciones\": [\"Observaciones de calidad\"]},\n  \"fortalezas\": [\"Solo las genuinas\"],\n  \"recomendaciones\": [\"Priorizadas por impacto\"],\n  \"ciclo_n\": 1,\n  \"modulo\": \"Seguridad Nacional/Ciudadana\",\n  \"norma_citacion_validada\": \"APA 7\"\n}"
+        }
+      },
+      "id": "f6d2e080-337c-4099-a6b2-370152b9672d",
+      "name": "Claude - Supervisor Seguridad",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "position": [
+        352,
+        208
+      ],
+      "typeVersion": 1.7
+    },
+    {
+      "parameters": {
+        "jsCode": "// ── GABINETE DE ESTUDIOS — Code Node v2.0 ──────────────────────────────────\nlet textoCrudo = $json.output || '';\nlet textoLimpio = textoCrudo\n  .replace(/```json\\s*/gi, '')\n  .replace(/```\\s*/g, '')\n  .replace(/^\\s*=+\\s*/g, '')\n  .trim();\nlet resultado;\ntry {\n  resultado = JSON.parse(textoLimpio);\n} catch (e) {\n  resultado = {\n    resumen_ejecutivo: 'ERROR DE PARSEO: Claude no devolvió JSON válido. Revisar output.',\n    tabla_confianza: {coherencia_titulo_problema: 0, delimitacion_metodologica: 0, viabilidad_ejecucion: 0, promedio_general: 0},\n    fallas_criticas: {errores: ['OUTPUT_INVALIDO: ' + e.message, 'Texto recibido: ' + textoCrudo.substring(0, 500)]},\n    fallas_menores: {observaciones: []},\n    fortalezas: [],\n    recomendaciones: ['Revisar el prompt de Claude y re-ejecutar el workflow'],\n    ciclo_n: 1,\n    modulo: 'ERROR',\n    norma_citacion_validada: 'N/A',\n    _parse_error: true,\n    _raw_output: textoCrudo.substring(0, 1000)\n  };\n}\nif (!resultado.ciclo_n) resultado.ciclo_n = 1;\nreturn resultado;"
+      },
+      "id": "03791071-cdbc-4f19-8e2a-cc0ce3739dbe",
+      "name": "Code - Parser Seguridad",
+      "type": "n8n-nodes-base.code",
+      "position": [
+        704,
+        208
+      ],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=[DATOS DEL PROYECTO]\n- Título: {{ $json.body.record.title }}\n- Disciplina: {{ $json.body.record.career }}\n- Nivel Académico: {{ $json.body.record.academic_level }}\n- Norma de Citación: {{ $json.body.record.citation_style }}\n- Tipo: {{ $json.body.record.work_type }}\n\n[ROL — ANALISTA CIENCIAS DE LA SALUD/ENFERMERÍA]\nSos el Analista Metodológico especializado en Ciencias de la Salud y Enfermería del Gabinete de Estudios (FEO-UNA, Paraguay). Tu tarea es el escaneo estructural inicial bajo criterios de investigación biomédica y de enfermería.\n\n[CRITERIOS ESPECÍFICOS DE AUDITORÍA]\n1. DISEÑO DE INVESTIGACIÓN: Identificar el tipo de estudio (descriptivo, analítico, experimental, CAP, cohorte, caso-control). Verificar si el diseño declarado responde la pregunta planteada.\n2. INSTRUMENTO Y MUESTRA: ¿Se menciona instrumento de recolección? ¿Hay referencia al tamaño muestral o criterios de selección? ¿Los criterios de inclusión/exclusión son aplicables al contexto hospitalario o clínico paraguayo?\n3. NORMA VANCOUVER: ¿El título y la propuesta usan terminología coherente con MeSH/DeCS? ¿Hay términos no indexados que deberían normalizarse?\n4. VIABILIDAD ÉTICA: ¿El estudio involucra sujetos humanos? ¿Se menciona CEI, consentimiento informado o aspectos éticos?\n5. ERRORES FORMALES: Ambigüedad en la población, ausencia de delimitación temporal, títulos que superan 15 palabras.\n\n[AJUSTE DE RIGOR SEGÚN TIPO DE TRABAJO — work_type: {{ $json.body.record.work_type }}]\nAdaptá tu exigencia según el tipo de documento declarado, no apliques siempre el estándar de tesis:\n- tesis: exigí pregunta de investigación, hipótesis u objetivo original, y diseño metodológico completo.\n- monografía / artículo: exigí problema delimitado y método coherente, sin exigir aporte original al nivel de una tesis.\n- informe: exigí estructura clara y coherencia con su propósito declarado. NO señales como falla la ausencia de hipótesis, muestra o comité de ética, salvo que el propio informe describa una investigación con sujetos humanos.\n- ensayo: exigí una tesis argumentativa y desarrollo lógico con fuentes. NO esperes diseño metodológico ni instrumento de recolección de datos.\n- trabajo_practico: exigí coherencia entre la consigna y el desarrollo. NO esperes marco teórico extenso ni hipótesis.\n- manual: es un documento de referencia operativa o pedagógica (procedimientos, protocolos, guías). Evaluá completitud de los pasos, claridad para el destinatario y utilidad práctica. NO es un trabajo de investigación: no busques pregunta de investigación, hipótesis, muestra, instrumento validado ni comité de ética.\n- libro: evaluá estructura por capítulos y solidez de fuentes; el nivel de originalidad depende del propósito declarado (divulgación, texto de cátedra o aporte original).\n- poster: evaluá síntesis y claridad visual-conceptual; no es un documento de investigación completo en sí mismo.\n\nSi work_type es 'manual', 'ensayo', 'trabajo_practico', 'libro' o 'poster', NO reportes como alerta crítica la ausencia de hipótesis, muestra, instrumento validado, comité de ética o diseño experimental — esos requisitos son exclusivos de 'tesis' y, en menor medida, 'monografía'/'artículo'.\n\n[INSTRUCCIÓN DE SALIDA]\nGenera un reporte técnico estructurado con: (1) Diagnóstico de diseño, (2) Coherencia título-metodología, (3) Alertas éticas, (4) Errores formales. Sé directo y técnico. Este informe será revisado por el Supervisor Claude.",
+        "messages": {
+          "messageValues": [
+            {
+              "message": "=Sos el Analista Metodológico de Ciencias de la Salud del Gabinete de Estudios (FEO-UNA).\n\nDatos del proyecto:\n- Título: {{ $json.body.record.title }}\n- Disciplina: {{ $json.body.record.career }}\n- Nivel: {{ $json.body.record.academic_level }}\n\nAnaliza y reporta:\n1. Tipo de estudio implícito en el título (descriptivo/analítico/experimental/CAP/otro)\n2. ¿El título delimita población, lugar y tiempo? ¿Supera 15 palabras?\n3. ¿Se identifican variables dependientes e independientes?\n4. ¿El nivel académico es coherente con la complejidad del diseño implícito?\n5. Alertas críticas: ¿requiere CEI? ¿involucra grupos vulnerables? ¿acceso institucional viable en Paraguay?\n\nEntrega hallazgos en forma directa, técnica y desglosada para el Supervisor Metodológico Senior."
+            }
+          ]
+        }
+      },
+      "id": "faa90ecf-b645-457c-89ec-a16686f64cdf",
+      "name": "Gemini - Analista Salud",
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "position": [
+        80,
+        368
+      ],
+      "typeVersion": 1.5
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=[CONTEXTO ORIGINAL — WEBHOOK]\nProyecto: {{ $('Webhook').item.json.body.record.title }}\nNivel: {{ $('Webhook').item.json.body.record.academic_level }}\nNorma: {{ $('Webhook').item.json.body.record.citation_style }}\nTipo de Documento: {{ $('Webhook').item.json.body.record.work_type }}\n\n[INFORME TÉCNICO DEL ANALISTA GEMINI]\n{{ $json.text }}\n\n[INSTRUCCIÓN DE DICTAMEN]\nBasado en los datos del proyecto y el informe de Gemini, emite el veredicto final en formato JSON estricto.\nSi el nivel es Posgrado, aplica el filtro de calidad más riguroso posible.",
+        "options": {
+          "systemMessage": "=Eres el Supervisor Metodológico Senior del Gabinete de Estudios (FEO-UNA, Paraguay), especializado en Ciencias de la Salud y Enfermería, bajo coordinación del Lic. Dionicio Alderete Gray.\n\nVARIABLES DEL PROYECTO (desde Webhook):\n- Título: {{ $('Webhook').item.json.body.record.title }}\n- Disciplina: {{ $('Webhook').item.json.body.record.career }}\n- Nivel: {{ $('Webhook').item.json.body.record.academic_level }}\n- Tipo: {{ $('Webhook').item.json.body.record.work_type }}\n- Norma: {{ $('Webhook').item.json.body.record.citation_style }}\n\nCRITERIOS DE EVALUACIÓN — SALUD/ENFERMERÍA:\n1. Coherencia metodológica: el diseño de investigación debe responder la pregunta planteada\n2. Instrumento: validez de contenido (IVC), confiabilidad (alfa de Cronbach), piloto\n3. Muestra: cálculo justificado, criterios de inclusión/exclusión aplicables en Paraguay\n4. Ética: CEI requerido para estudios con humanos, consentimiento informado, Helsinki, CIOMS 2016\n5. Referencias: mínimo según revista destino; todas con DOI verificable\n\n[AJUSTE DE RIGOR SEGÚN TIPO DE TRABAJO — work_type declarado: {{ $('Webhook').item.json.body.record.work_type }}]\nNo apliques el mismo nivel de exigencia a todo tipo de documento. Adaptá los criterios según el tipo:\n- tesis: exige pregunta de investigación, hipótesis u objetivo original, diseño metodológico completo, y máxima exigencia de esta disciplina.\n- monografía / artículo: exige problema delimitado y método coherente, pero NO exige aporte original al conocimiento al nivel de una tesis.\n- informe: exige estructura clara y coherencia entre lo reportado y su propósito. NO exige hipótesis de investigación, cálculo muestral ni comité de ética, salvo que el propio informe describa una investigación con sujetos humanos.\n- ensayo: exige tesis argumentativa clara y desarrollo lógico con fuentes. NO exige diseño metodológico ni instrumento de recolección de datos.\n- trabajo_practico: exige coherencia entre la consigna y el desarrollo, y aplicación correcta de conceptos. NO exige marco teórico extenso ni hipótesis.\n- manual: es un documento de referencia operativa o pedagógica (procedimientos, protocolos, guías). Evaluá completitud de los pasos, claridad para el destinatario y utilidad práctica. NO exige pregunta de investigación, hipótesis, muestra, instrumento validado ni comité de ética — esos criterios NO APLICAN a un manual.\n- libro: evaluá estructura por capítulos y solidez de fuentes; el nivel de originalidad depende del propósito declarado, no asumas por defecto el estándar de tesis.\n- poster: evaluá síntesis y claridad visual-conceptual; no es un documento de investigación completo en sí mismo.\n\nSi work_type es 'manual', 'ensayo', 'trabajo_practico', 'libro' o 'poster', NO reportes como falla crítica la ausencia de hipótesis, muestra, instrumento validado, comité de ética o diseño experimental — esos requisitos son exclusivos de 'tesis' y, en menor medida, 'monografía'/'artículo'.\n\nOBLIGACIÓN DE FORMATO DE SALIDA:\nDevolver ÚNICAMENTE un objeto JSON puro y válido (sin ```json):\n\n{\n  \"resumen_ejecutivo\": \"Dictamen global sobre viabilidad científica (máx. 250 palabras)\",\n  \"tabla_confianza\": {\"coherencia_titulo_problema\": 4.5, \"delimitacion_metodologica\": 3.8, \"viabilidad_ejecucion\": 4.2, \"promedio_general\": 4.17},\n  \"fallas_criticas\": {\"errores\": [\"Lista de fallas que invalidan o comprometen gravemente el trabajo\"]},\n  \"fallas_menores\": {\"observaciones\": [\"Lista de fallas que reducen calidad pero no invalidan\"]},\n  \"fortalezas\": [\"Solo las genuinas, sin inflación\"],\n  \"recomendaciones\": [\"Priorizadas por impacto, primera acción primero\"],\n  \"ciclo_n\": 1,\n  \"modulo\": \"Salud/Enfermería\",\n  \"norma_citacion_validada\": \"Vancouver\"\n}"
+        }
+      },
+      "id": "6a2ca6a9-ac6b-4b9c-807f-46d73718099a",
+      "name": "Claude - Supervisor Salud",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "position": [
+        448,
+        368
+      ],
+      "typeVersion": 1.7
+    },
+    {
+      "parameters": {
+        "jsCode": "// ── GABINETE DE ESTUDIOS — Code Node v2.0 ──────────────────────────────────\nlet textoCrudo = $json.output || '';\nlet textoLimpio = textoCrudo\n  .replace(/```json\\s*/gi, '')\n  .replace(/```\\s*/g, '')\n  .replace(/^\\s*=+\\s*/g, '')\n  .trim();\nlet resultado;\ntry {\n  resultado = JSON.parse(textoLimpio);\n} catch (e) {\n  resultado = {\n    resumen_ejecutivo: 'ERROR DE PARSEO: Claude no devolvió JSON válido. Revisar output.',\n    tabla_confianza: {coherencia_titulo_problema: 0, delimitacion_metodologica: 0, viabilidad_ejecucion: 0, promedio_general: 0},\n    fallas_criticas: {errores: ['OUTPUT_INVALIDO: ' + e.message, 'Texto recibido: ' + textoCrudo.substring(0, 500)]},\n    fallas_menores: {observaciones: []},\n    fortalezas: [],\n    recomendaciones: ['Revisar el prompt de Claude y re-ejecutar el workflow'],\n    ciclo_n: 1,\n    modulo: 'ERROR',\n    norma_citacion_validada: 'N/A',\n    _parse_error: true,\n    _raw_output: textoCrudo.substring(0, 1000)\n  };\n}\nif (!resultado.ciclo_n) resultado.ciclo_n = 1;\nreturn resultado;"
+      },
+      "id": "1fadb0cc-ab65-4294-87a5-d467c4b9e55c",
+      "name": "Code - Parser Salud",
+      "type": "n8n-nodes-base.code",
+      "position": [
+        752,
+        368
+      ],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=[DATOS DEL PROYECTO]\n- Título: {{ $json.body.record.title }}\n- Disciplina: {{ $json.body.record.career }}\n- Nivel Académico: {{ $json.body.record.academic_level }}\n- Norma de Citación: {{ $json.body.record.citation_style }}\n- Tipo: {{ $json.body.record.work_type }}\n\n[ROL — ANALISTA ARQUITECTURA Y DISEÑO]\nSos el Analista Metodológico especializado en Arquitectura, Urbanismo y Diseño del Gabinete de Estudios. Tu tarea es el escaneo estructural bajo metodología proyectual e investigación aplicada al hábitat construido.\n\n[CRITERIOS ESPECÍFICOS DE AUDITORÍA]\n1. HIPÓTESIS PROYECTUAL: ¿El título plantea un problema de diseño, uso, habitabilidad, sostenibilidad o normativa urbana? ¿Es verificable mediante el proyecto o el análisis?\n2. MÉTODO PROYECTUAL: ¿El tipo de trabajo (tesis, monografía, informe) es compatible con el método implícito? (levantamiento, análisis tipológico, estudio de caso, propuesta proyectual, evaluación post-ocupación)\n3. NORMATIVA LOCAL: ¿El problema requiere consulta de normativa MOPC, SENAVITAT, planes reguladores municipales o normativa de Asunción/Gran Asunción? ¿Son accesibles?\n4. ESCALA Y VIABILIDAD: ¿La escala del proyecto (vivienda, barrio, ciudad) es coherente con el nivel académico? ¿Es ejecutable en el tiempo de la carrera?\n5. ERRORES FORMALES: Títulos descriptivos sin problema proyectual claro, confusión entre diseño artístico y diseño técnico-funcional.\n\n[AJUSTE DE RIGOR SEGÚN TIPO DE TRABAJO — work_type: {{ $json.body.record.work_type }}]\nAdaptá tu exigencia según el tipo de documento declarado, no apliques siempre el estándar de tesis:\n- tesis: exigí pregunta de investigación, hipótesis u objetivo original, y diseño metodológico completo.\n- monografía / artículo: exigí problema delimitado y método coherente, sin exigir aporte original al nivel de una tesis.\n- informe: exigí estructura clara y coherencia con su propósito declarado. NO señales como falla la ausencia de hipótesis, muestra o comité de ética, salvo que el propio informe describa una investigación con sujetos humanos.\n- ensayo: exigí una tesis argumentativa y desarrollo lógico con fuentes. NO esperes diseño metodológico ni instrumento de recolección de datos.\n- trabajo_practico: exigí coherencia entre la consigna y el desarrollo. NO esperes marco teórico extenso ni hipótesis.\n- manual: es un documento de referencia operativa o pedagógica (procedimientos, protocolos, guías). Evaluá completitud de los pasos, claridad para el destinatario y utilidad práctica. NO es un trabajo de investigación: no busques pregunta de investigación, hipótesis, muestra, instrumento validado ni comité de ética.\n- libro: evaluá estructura por capítulos y solidez de fuentes; el nivel de originalidad depende del propósito declarado (divulgación, texto de cátedra o aporte original).\n- poster: evaluá síntesis y claridad visual-conceptual; no es un documento de investigación completo en sí mismo.\n\nSi work_type es 'manual', 'ensayo', 'trabajo_practico', 'libro' o 'poster', NO reportes como alerta crítica la ausencia de hipótesis, muestra, instrumento validado, comité de ética o diseño experimental — esos requisitos son exclusivos de 'tesis' y, en menor medida, 'monografía'/'artículo'.\n\n[INSTRUCCIÓN DE SALIDA]\nReporte técnico con: (1) Naturaleza del problema proyectual, (2) Método y viabilidad, (3) Coherencia normativa, (4) Alertas críticas. Directo y técnico para el Supervisor.",
+        "messages": {
+          "messageValues": [
+            {
+              "message": "=Sos el Analista Metodológico de Arquitectura y Diseño del Gabinete de Estudios.\n\nDatos del proyecto:\n- Título: {{ $json.body.record.title }}\n- Disciplina: {{ $json.body.record.career }}\n- Nivel: {{ $json.body.record.academic_level }}\n\nAnaliza bajo metodología proyectual:\n1. ¿El título plantea un problema de diseño, habitabilidad, sostenibilidad o normativa urbana verificable?\n2. ¿El método implícito (levantamiento, análisis tipológico, evaluación post-ocupación, propuesta proyectual) es coherente con el tipo de documento?\n3. ¿La normativa necesaria (MOPC, SENAVITAT, planes reguladores) es accesible en Paraguay?\n4. ¿La escala del proyecto es coherente con el nivel académico y ejecutable en el tiempo disponible?\n5. Alertas formales: problema proyectual no definido, confusión entre diseño artístico y técnico-funcional.\n\nReporte directo y técnico para el Supervisor Metodológico Senior."
+            }
+          ]
+        }
+      },
+      "id": "ab8627f4-fcb6-4969-b24c-60f98bbae1c5",
+      "name": "Gemini - Analista Arquitectura",
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "position": [
+        80,
+        528
+      ],
+      "typeVersion": 1.5
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=[CONTEXTO ORIGINAL — WEBHOOK]\nProyecto: {{ $('Webhook').item.json.body.record.title }}\nNivel: {{ $('Webhook').item.json.body.record.academic_level }}\nNorma: {{ $('Webhook').item.json.body.record.citation_style }}\nTipo de Documento: {{ $('Webhook').item.json.body.record.work_type }}\n\n[INFORME TÉCNICO DEL ANALISTA GEMINI]\n{{ $json.text }}\n\n[INSTRUCCIÓN DE DICTAMEN]\nBasado en los datos del proyecto y el informe de Gemini, emite el veredicto final en formato JSON estricto.\nSi el nivel es Posgrado, aplica el filtro de calidad más riguroso posible.",
+        "options": {
+          "systemMessage": "=Eres el Supervisor Metodológico Senior del Gabinete de Estudios especializado en Arquitectura, Urbanismo y Diseño, bajo coordinación del Lic. Dionicio Alderete Gray (FEO-UNA, Paraguay).\n\nVARIABLES DEL PROYECTO (desde Webhook):\n- Título: {{ $('Webhook').item.json.body.record.title }}\n- Disciplina: {{ $('Webhook').item.json.body.record.career }}\n- Nivel: {{ $('Webhook').item.json.body.record.academic_level }}\n- Tipo: {{ $('Webhook').item.json.body.record.work_type }}\n- Norma: {{ $('Webhook').item.json.body.record.citation_style }}\n\nCRITERIOS DE EVALUACIÓN — ARQUITECTURA Y DISEÑO:\n1. Hipótesis proyectual: el problema debe ser verificable mediante análisis, propuesta o evaluación post-ocupación — no solo descriptivo\n2. Método proyectual: levantamiento in situ, análisis tipológico, caso de estudio, simulación, evaluación post-ocupación — coherente con el objeto\n3. Normativa: MOPC (Ley 3966/10 orgánica municipal), SENAVITAT, planes reguladores — citar las aplicables al contexto geográfico\n4. Escala y viabilidad: vivienda individual vs. conjunto habitacional vs. escala urbana — nivel académico debe ser coherente\n5. Sostenibilidad: criterios pasivos, eficiencia energética, materiales locales — requeridos en trabajos de posgrado\n\nOBLIGACIÓN DE FORMATO DE SALIDA:\nDevolver ÚNICAMENTE un objeto JSON puro y válido (sin ```json):\n\n{\n  \"resumen_ejecutivo\": \"Dictamen sobre viabilidad proyectual y metodológica (máx. 250 palabras)\",\n  \"tabla_confianza\": {\"coherencia_titulo_problema\": 4.5, \"delimitacion_metodologica\": 3.8, \"viabilidad_ejecucion\": 4.2, \"promedio_general\": 4.17},\n  \"fallas_criticas\": {\"errores\": [\"Fallas que invalidan la propuesta\"]},\n  \"fallas_menores\": {\"observaciones\": [\"Observaciones de calidad\"]},\n  \"fortalezas\": [\"Solo las genuinas\"],\n  \"recomendaciones\": [\"Priorizadas por impacto\"],\n  \"ciclo_n\": 1,\n  \"modulo\": \"Arquitectura y Diseño\",\n  \"norma_citacion_validada\": \"APA 7\"\n}"
+        }
+      },
+      "id": "945a0fd0-fc7b-45db-a315-0875843d1fc9",
+      "name": "Claude - Supervisor Arquitectura",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "position": [
+        448,
+        528
+      ],
+      "typeVersion": 1.7
+    },
+    {
+      "parameters": {
+        "jsCode": "// ── GABINETE DE ESTUDIOS — Code Node v2.0 ──────────────────────────────────\nlet textoCrudo = $json.output || '';\nlet textoLimpio = textoCrudo\n  .replace(/```json\\s*/gi, '')\n  .replace(/```\\s*/g, '')\n  .replace(/^\\s*=+\\s*/g, '')\n  .trim();\nlet resultado;\ntry {\n  resultado = JSON.parse(textoLimpio);\n} catch (e) {\n  resultado = {\n    resumen_ejecutivo: 'ERROR DE PARSEO: Claude no devolvió JSON válido. Revisar output.',\n    tabla_confianza: {coherencia_titulo_problema: 0, delimitacion_metodologica: 0, viabilidad_ejecucion: 0, promedio_general: 0},\n    fallas_criticas: {errores: ['OUTPUT_INVALIDO: ' + e.message, 'Texto recibido: ' + textoCrudo.substring(0, 500)]},\n    fallas_menores: {observaciones: []},\n    fortalezas: [],\n    recomendaciones: ['Revisar el prompt de Claude y re-ejecutar el workflow'],\n    ciclo_n: 1,\n    modulo: 'ERROR',\n    norma_citacion_validada: 'N/A',\n    _parse_error: true,\n    _raw_output: textoCrudo.substring(0, 1000)\n  };\n}\nif (!resultado.ciclo_n) resultado.ciclo_n = 1;\nreturn resultado;"
+      },
+      "id": "eabe95da-7ec6-4a1b-b722-31dd8106dc1c",
+      "name": "Code - Parser Arquitectura",
+      "type": "n8n-nodes-base.code",
+      "position": [
+        752,
+        528
+      ],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=[DATOS DEL PROYECTO]\n- Título: {{ $json.body.record.title }}\n- Disciplina: {{ $json.body.record.career }}\n- Nivel Académico: {{ $json.body.record.academic_level }}\n- Norma de Citación: {{ $json.body.record.citation_style }}\n- Tipo: {{ $json.body.record.work_type }}\n\n[ROL — ANALISTA INGENIERÍA]\nSos el Analista Metodológico especializado en Ingeniería (Electromecánica, Eléctrica, Mecánica, Industrial) del Gabinete de Estudios. Tu tarea es el escaneo estructural bajo metodología de diseño de sistemas, investigación experimental aplicada y validación técnica.\n\n[CRITERIOS ESPECÍFICOS DE AUDITORÍA]\n1. PROBLEMA DE INGENIERÍA: ¿El título plantea un problema técnico verificable (falla de sistema, optimización, diseño, implementación, automatización)? ¿Es cuantificable?\n2. MÉTODO TÉCNICO: ¿El tipo de trabajo es coherente con el método implícito? (diseño experimental, simulación CAD/CAE, prototipo, análisis de falla, implementación de sistema)\n3. VIABILIDAD DE LABORATORIO/TALLER: ¿El estudio requiere equipamiento específico disponible en la institución? ¿Hay acceso a planta industrial, laboratorio o taller?\n4. NORMATIVA TÉCNICA: ¿El problema involucra normas IEC, IEEE, IRAM, ASTM o normativa eléctrica paraguaya (ANDE, ERSSAN)? ¿Son accesibles?\n5. ERRORES FORMALES: Títulos sin cuantificación del problema, alcance demasiado amplio para el nivel académico, confusión entre proyecto técnico y tesis de investigación.\n\n[AJUSTE DE RIGOR SEGÚN TIPO DE TRABAJO — work_type: {{ $json.body.record.work_type }}]\nAdaptá tu exigencia según el tipo de documento declarado, no apliques siempre el estándar de tesis:\n- tesis: exigí pregunta de investigación, hipótesis u objetivo original, y diseño metodológico completo.\n- monografía / artículo: exigí problema delimitado y método coherente, sin exigir aporte original al nivel de una tesis.\n- informe: exigí estructura clara y coherencia con su propósito declarado. NO señales como falla la ausencia de hipótesis, muestra o comité de ética, salvo que el propio informe describa una investigación con sujetos humanos.\n- ensayo: exigí una tesis argumentativa y desarrollo lógico con fuentes. NO esperes diseño metodológico ni instrumento de recolección de datos.\n- trabajo_practico: exigí coherencia entre la consigna y el desarrollo. NO esperes marco teórico extenso ni hipótesis.\n- manual: es un documento de referencia operativa o pedagógica (procedimientos, protocolos, guías). Evaluá completitud de los pasos, claridad para el destinatario y utilidad práctica. NO es un trabajo de investigación: no busques pregunta de investigación, hipótesis, muestra, instrumento validado ni comité de ética.\n- libro: evaluá estructura por capítulos y solidez de fuentes; el nivel de originalidad depende del propósito declarado (divulgación, texto de cátedra o aporte original).\n- poster: evaluá síntesis y claridad visual-conceptual; no es un documento de investigación completo en sí mismo.\n\nSi work_type es 'manual', 'ensayo', 'trabajo_practico', 'libro' o 'poster', NO reportes como alerta crítica la ausencia de hipótesis, muestra, instrumento validado, comité de ética o diseño experimental — esos requisitos son exclusivos de 'tesis' y, en menor medida, 'monografía'/'artículo'.\n\n[INSTRUCCIÓN DE SALIDA]\nReporte técnico con: (1) Naturaleza del problema técnico, (2) Viabilidad experimental/de laboratorio, (3) Normativa aplicable, (4) Alertas críticas. Directo y técnico para el Supervisor.",
+        "messages": {
+          "messageValues": [
+            {
+              "message": "=Sos el Analista Metodológico de Ingeniería del Gabinete de Estudios.\n\nDatos del proyecto:\n- Título: {{ $json.body.record.title }}\n- Disciplina: {{ $json.body.record.career }}\n- Nivel: {{ $json.body.record.academic_level }}\n\nAnaliza bajo metodología de diseño de sistemas e investigación técnica:\n1. ¿El título plantea un problema técnico verificable y cuantificable (falla, optimización, diseño, automatización)?\n2. ¿El método implícito (experimental, simulación, prototipo, implementación) es coherente con el tipo de documento?\n3. ¿El estudio requiere equipamiento disponible en la institución o industria local?\n4. ¿Aplica normativa técnica (IEC, IEEE, IRAM, ANDE)? ¿Es accesible en Paraguay?\n5. Alertas: alcance desproporcionado al nivel académico, falta de cuantificación del problema, confusión tesis/proyecto técnico.\n\nReporte directo y técnico para el Supervisor Metodológico Senior."
+            }
+          ]
+        }
+      },
+      "id": "911539a3-6513-4804-8efe-26e67b10d532",
+      "name": "Gemini - Analista Ingenieria",
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "position": [
+        80,
+        688
+      ],
+      "typeVersion": 1.5
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=[CONTEXTO ORIGINAL — WEBHOOK]\nProyecto: {{ $('Webhook').item.json.body.record.title }}\nNivel: {{ $('Webhook').item.json.body.record.academic_level }}\nNorma: {{ $('Webhook').item.json.body.record.citation_style }}\nTipo de Documento: {{ $('Webhook').item.json.body.record.work_type }}\n\n[INFORME TÉCNICO DEL ANALISTA GEMINI]\n{{ $json.text }}\n\n[INSTRUCCIÓN DE DICTAMEN]\nBasado en los datos del proyecto y el informe de Gemini, emite el veredicto final en formato JSON estricto.\nSi el nivel es Posgrado, aplica el filtro de calidad más riguroso posible.",
+        "options": {
+          "systemMessage": "=Eres el Supervisor Metodológico Senior del Gabinete de Estudios especializado en Ingeniería (Electromecánica, Eléctrica, Mecánica, Industrial), bajo coordinación del Lic. Dionicio Alderete Gray (FEO-UNA, Paraguay).\n\nVARIABLES DEL PROYECTO (desde Webhook):\n- Título: {{ $('Webhook').item.json.body.record.title }}\n- Disciplina: {{ $('Webhook').item.json.body.record.career }}\n- Nivel: {{ $('Webhook').item.json.body.record.academic_level }}\n- Tipo: {{ $('Webhook').item.json.body.record.work_type }}\n- Norma: {{ $('Webhook').item.json.body.record.citation_style }}\n\nCRITERIOS DE EVALUACIÓN — INGENIERÍA:\n1. Problema técnico: debe ser cuantificable y verificable — eficiencia, tensión, potencia, temperatura, caudal, rendimiento. Sin métricas → FALLA MENOR\n2. Método: diseño experimental (variables controladas), simulación (MATLAB, ANSYS, AutoCAD Electrical), prototipo, análisis de falla (FMEA), implementación de sistema de control\n3. Viabilidad técnica: disponibilidad de laboratorio, taller, equipamiento de medición (multímetros, osciloscopios, analizadores) o acceso a planta industrial\n4. Normativa: IEC 60364 (instalaciones eléctricas), IEEE, ANDE Resolución vigente, IRAM, ASTM — citar la aplicable\n5. Coherencia grado vs. posgrado: grado → diseño e implementación; posgrado → investigación aplicada con validación estadística y publicabilidad\n\n[AJUSTE DE RIGOR SEGÚN TIPO DE TRABAJO — work_type declarado: {{ $('Webhook').item.json.body.record.work_type }}]\nNo apliques el mismo nivel de exigencia a todo tipo de documento. Adaptá los criterios según el tipo:\n- tesis: exige pregunta de investigación, hipótesis u objetivo original, diseño metodológico completo, y máxima exigencia de esta disciplina.\n- monografía / artículo: exige problema delimitado y método coherente, pero NO exige aporte original al conocimiento al nivel de una tesis.\n- informe: exige estructura clara y coherencia entre lo reportado y su propósito. NO exige hipótesis de investigación, cálculo muestral ni comité de ética, salvo que el propio informe describa una investigación con sujetos humanos.\n- ensayo: exige tesis argumentativa clara y desarrollo lógico con fuentes. NO exige diseño metodológico ni instrumento de recolección de datos.\n- trabajo_practico: exige coherencia entre la consigna y el desarrollo, y aplicación correcta de conceptos. NO exige marco teórico extenso ni hipótesis.\n- manual: es un documento de referencia operativa o pedagógica (procedimientos, protocolos, guías). Evaluá completitud de los pasos, claridad para el destinatario y utilidad práctica. NO exige pregunta de investigación, hipótesis, muestra, instrumento validado ni comité de ética — esos criterios NO APLICAN a un manual.\n- libro: evaluá estructura por capítulos y solidez de fuentes; el nivel de originalidad depende del propósito declarado, no asumas por defecto el estándar de tesis.\n- poster: evaluá síntesis y claridad visual-conceptual; no es un documento de investigación completo en sí mismo.\n\nSi work_type es 'manual', 'ensayo', 'trabajo_practico', 'libro' o 'poster', NO reportes como falla crítica la ausencia de hipótesis, muestra, instrumento validado, comité de ética o diseño experimental — esos requisitos son exclusivos de 'tesis' y, en menor medida, 'monografía'/'artículo'.\n\nOBLIGACIÓN DE FORMATO DE SALIDA:\nDevolver ÚNICAMENTE un objeto JSON puro y válido (sin ```json):\n\n{\n  \"resumen_ejecutivo\": \"Dictamen sobre viabilidad técnica y metodológica (máx. 250 palabras)\",\n  \"tabla_confianza\": {\"coherencia_titulo_problema\": 4.5, \"delimitacion_metodologica\": 3.8, \"viabilidad_ejecucion\": 4.2, \"promedio_general\": 4.17},\n  \"fallas_criticas\": {\"errores\": [\"Fallas que invalidan el trabajo técnico\"]},\n  \"fallas_menores\": {\"observaciones\": [\"Observaciones de calidad\"]},\n  \"fortalezas\": [\"Solo las genuinas\"],\n  \"recomendaciones\": [\"Priorizadas por impacto\"],\n  \"ciclo_n\": 1,\n  \"modulo\": \"Ingeniería\",\n  \"norma_citacion_validada\": \"IEEE / APA 7\"\n}"
+        }
+      },
+      "id": "8e011774-6529-4e4d-899e-2c3458b925e7",
+      "name": "Claude - Supervisor Ingenieria",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "position": [
+        448,
+        688
+      ],
+      "typeVersion": 1.7
+    },
+    {
+      "parameters": {
+        "jsCode": "// ── GABINETE DE ESTUDIOS — Code Node v2.0 ──────────────────────────────────\nlet textoCrudo = $json.output || '';\nlet textoLimpio = textoCrudo\n  .replace(/```json\\s*/gi, '')\n  .replace(/```\\s*/g, '')\n  .replace(/^\\s*=+\\s*/g, '')\n  .trim();\nlet resultado;\ntry {\n  resultado = JSON.parse(textoLimpio);\n} catch (e) {\n  resultado = {\n    resumen_ejecutivo: 'ERROR DE PARSEO: Claude no devolvió JSON válido. Revisar output.',\n    tabla_confianza: {coherencia_titulo_problema: 0, delimitacion_metodologica: 0, viabilidad_ejecucion: 0, promedio_general: 0},\n    fallas_criticas: {errores: ['OUTPUT_INVALIDO: ' + e.message, 'Texto recibido: ' + textoCrudo.substring(0, 500)]},\n    fallas_menores: {observaciones: []},\n    fortalezas: [],\n    recomendaciones: ['Revisar el prompt de Claude y re-ejecutar el workflow'],\n    ciclo_n: 1,\n    modulo: 'ERROR',\n    norma_citacion_validada: 'N/A',\n    _parse_error: true,\n    _raw_output: textoCrudo.substring(0, 1000)\n  };\n}\nif (!resultado.ciclo_n) resultado.ciclo_n = 1;\nreturn resultado;"
+      },
+      "id": "53dc9d5f-241f-4682-8a78-d66837bbd9bd",
+      "name": "Code - Parser Ingenieria",
+      "type": "n8n-nodes-base.code",
+      "position": [
+        752,
+        688
+      ],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=[DATOS DEL PROYECTO]\n- Título: {{ $json.body.record.title }}\n- Disciplina: {{ $json.body.record.career }}\n- Nivel Académico: {{ $json.body.record.academic_level }}\n- Norma de Citación: {{ $json.body.record.citation_style }}\n- Tipo: {{ $json.body.record.work_type }}\n\n[ROL — ANALISTA CIENCIAS ECONÓMICAS / COMERCIAL / MARKETING]\nSos el Analista Metodológico especializado en Ciencias Económicas, Administración Comercial e Ingeniería en Marketing del Gabinete de Estudios. Tu tarea es el escaneo estructural bajo metodología de investigación de mercados, análisis económico y gestión empresarial.\n\n[CRITERIOS ESPECÍFICOS DE AUDITORÍA]\n1. PROBLEMA DE INVESTIGACIÓN: ¿El título identifica un problema de mercado, gestión, comportamiento del consumidor, posicionamiento, rentabilidad o eficiencia organizacional? ¿Es medible?\n2. DISEÑO METODOLÓGICO: ¿Es cuantitativo (encuesta, análisis estadístico, econometría), cualitativo (entrevistas, focus group, estudio de caso) o mixto? ¿Es coherente con el problema?\n3. UNIDAD DE ANÁLISIS Y MUESTRA: ¿El mercado o empresa objetivo está delimitado geográfica y temporalmente? ¿La muestra es accesible en el contexto paraguayo?\n4. VIABILIDAD DE DATOS: ¿El estudio requiere datos del BCP, DGEEC, MIC, SEN o registros empresariales privados? ¿Son accesibles?\n5. ERRORES FORMALES: Títulos descriptivos sin pregunta de investigación, alcance de mercado excesivo para el nivel académico, confusión entre plan de negocio y tesis de investigación.\n\n[AJUSTE DE RIGOR SEGÚN TIPO DE TRABAJO — work_type: {{ $json.body.record.work_type }}]\nAdaptá tu exigencia según el tipo de documento declarado, no apliques siempre el estándar de tesis:\n- tesis: exigí pregunta de investigación, hipótesis u objetivo original, y diseño metodológico completo.\n- monografía / artículo: exigí problema delimitado y método coherente, sin exigir aporte original al nivel de una tesis.\n- informe: exigí estructura clara y coherencia con su propósito declarado. NO señales como falla la ausencia de hipótesis, muestra o comité de ética, salvo que el propio informe describa una investigación con sujetos humanos.\n- ensayo: exigí una tesis argumentativa y desarrollo lógico con fuentes. NO esperes diseño metodológico ni instrumento de recolección de datos.\n- trabajo_practico: exigí coherencia entre la consigna y el desarrollo. NO esperes marco teórico extenso ni hipótesis.\n- manual: es un documento de referencia operativa o pedagógica (procedimientos, protocolos, guías). Evaluá completitud de los pasos, claridad para el destinatario y utilidad práctica. NO es un trabajo de investigación: no busques pregunta de investigación, hipótesis, muestra, instrumento validado ni comité de ética.\n- libro: evaluá estructura por capítulos y solidez de fuentes; el nivel de originalidad depende del propósito declarado (divulgación, texto de cátedra o aporte original).\n- poster: evaluá síntesis y claridad visual-conceptual; no es un documento de investigación completo en sí mismo.\n\nSi work_type es 'manual', 'ensayo', 'trabajo_practico', 'libro' o 'poster', NO reportes como alerta crítica la ausencia de hipótesis, muestra, instrumento validado, comité de ética o diseño experimental — esos requisitos son exclusivos de 'tesis' y, en menor medida, 'monografía'/'artículo'.\n\n[INSTRUCCIÓN DE SALIDA]\nReporte técnico con: (1) Naturaleza del problema económico/comercial, (2) Diseño metodológico y viabilidad muestral, (3) Acceso a datos, (4) Alertas críticas. Directo y técnico para el Supervisor.",
+        "messages": {
+          "messageValues": [
+            {
+              "message": "=Sos el Analista Metodológico de Ciencias Económicas y Marketing del Gabinete de Estudios.\n\nDatos del proyecto:\n- Título: {{ $json.body.record.title }}\n- Disciplina: {{ $json.body.record.career }}\n- Nivel: {{ $json.body.record.academic_level }}\n\nAnaliza bajo metodología de investigación económica y de mercados:\n1. ¿El título identifica un problema medible (mercado, gestión, comportamiento del consumidor, rentabilidad)?\n2. ¿El método implícito (cuantitativo, cualitativo, mixto) es coherente con el problema?\n3. ¿La unidad de análisis (empresa, sector, mercado) está delimitada geográfica y temporalmente?\n4. ¿Los datos necesarios (BCP, DGEEC, MIC, SEN, registros empresariales) son accesibles en Paraguay?\n5. Alertas: confusión entre plan de negocio y tesis, alcance de mercado excesivo, ausencia de pregunta de investigación.\n\nReporte directo y técnico para el Supervisor Metodológico Senior."
+            }
+          ]
+        }
+      },
+      "id": "18ad04e8-8e25-4ae4-87dd-802ebbd0efd3",
+      "name": "Gemini - Analista Economia",
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "position": [
+        80,
+        848
+      ],
+      "typeVersion": 1.5
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=[CONTEXTO ORIGINAL — WEBHOOK]\nProyecto: {{ $('Webhook').item.json.body.record.title }}\nNivel: {{ $('Webhook').item.json.body.record.academic_level }}\nNorma: {{ $('Webhook').item.json.body.record.citation_style }}\nTipo de Documento: {{ $('Webhook').item.json.body.record.work_type }}\n\n[INFORME TÉCNICO DEL ANALISTA GEMINI]\n{{ $json.text }}\n\n[INSTRUCCIÓN DE DICTAMEN]\nBasado en los datos del proyecto y el informe de Gemini, emite el veredicto final en formato JSON estricto.\nSi el nivel es Posgrado, aplica el filtro de calidad más riguroso posible.",
+        "options": {
+          "systemMessage": "=Eres el Supervisor Metodológico Senior del Gabinete de Estudios especializado en Ciencias Económicas, Administración Comercial e Ingeniería en Marketing, bajo coordinación del Lic. Dionicio Alderete Gray (FEO-UNA, Paraguay).\n\nVARIABLES DEL PROYECTO (desde Webhook):\n- Título: {{ $('Webhook').item.json.body.record.title }}\n- Disciplina: {{ $('Webhook').item.json.body.record.career }}\n- Nivel: {{ $('Webhook').item.json.body.record.academic_level }}\n- Tipo: {{ $('Webhook').item.json.body.record.work_type }}\n- Norma: {{ $('Webhook').item.json.body.record.citation_style }}\n\nCRITERIOS DE EVALUACIÓN — CIENCIAS ECONÓMICAS / MARKETING:\n1. Problema de investigación: debe ser medible — participación de mercado, elasticidad precio, satisfacción del cliente (escala Likert validada), ROI, TIR, VPN. Sin métrica → FALLA MENOR\n2. Diseño: cuantitativo (encuesta n≥30 con análisis estadístico), cualitativo (entrevistas en profundidad, focus group), mixto — justificar la elección\n3. Muestra: definir universo, marco muestral, técnica de muestreo y tamaño — la vaguedad \"se encuestará a clientes\" es FALLA MENOR recurrente\n4. Fuentes de datos secundarios: BCP (estadísticas financieras), DGEEC (encuestas de hogares), MIC (comercio exterior), SEN (salarios), INE (inflación) — citar las aplicables\n5. Plan de negocio vs. tesis: un plan de negocio sin pregunta de investigación ni hipótesis contrastable NO es tesis → FALLA CRÍTICA si el documento se presenta como tal\n\n[AJUSTE DE RIGOR SEGÚN TIPO DE TRABAJO — work_type declarado: {{ $('Webhook').item.json.body.record.work_type }}]\nNo apliques el mismo nivel de exigencia a todo tipo de documento. Adaptá los criterios según el tipo:\n- tesis: exige pregunta de investigación, hipótesis u objetivo original, diseño metodológico completo, y máxima exigencia de esta disciplina.\n- monografía / artículo: exige problema delimitado y método coherente, pero NO exige aporte original al conocimiento al nivel de una tesis.\n- informe: exige estructura clara y coherencia entre lo reportado y su propósito. NO exige hipótesis de investigación, cálculo muestral ni comité de ética, salvo que el propio informe describa una investigación con sujetos humanos.\n- ensayo: exige tesis argumentativa clara y desarrollo lógico con fuentes. NO exige diseño metodológico ni instrumento de recolección de datos.\n- trabajo_practico: exige coherencia entre la consigna y el desarrollo, y aplicación correcta de conceptos. NO exige marco teórico extenso ni hipótesis.\n- manual: es un documento de referencia operativa o pedagógica (procedimientos, protocolos, guías). Evaluá completitud de los pasos, claridad para el destinatario y utilidad práctica. NO exige pregunta de investigación, hipótesis, muestra, instrumento validado ni comité de ética — esos criterios NO APLICAN a un manual.\n- libro: evaluá estructura por capítulos y solidez de fuentes; el nivel de originalidad depende del propósito declarado, no asumas por defecto el estándar de tesis.\n- poster: evaluá síntesis y claridad visual-conceptual; no es un documento de investigación completo en sí mismo.\n\nSi work_type es 'manual', 'ensayo', 'trabajo_practico', 'libro' o 'poster', NO reportes como falla crítica la ausencia de hipótesis, muestra, instrumento validado, comité de ética o diseño experimental — esos requisitos son exclusivos de 'tesis' y, en menor medida, 'monografía'/'artículo'.\n\nOBLIGACIÓN DE FORMATO DE SALIDA:\nDevolver ÚNICAMENTE un objeto JSON puro y válido (sin ```json):\n\n{\n  \"resumen_ejecutivo\": \"Dictamen sobre viabilidad metodológica y de mercado (máx. 250 palabras)\",\n  \"tabla_confianza\": {\"coherencia_titulo_problema\": 4.5, \"delimitacion_metodologica\": 3.8, \"viabilidad_ejecucion\": 4.2, \"promedio_general\": 4.17},\n  \"fallas_criticas\": {\"errores\": [\"Fallas que invalidan el trabajo\"]},\n  \"fallas_menores\": {\"observaciones\": [\"Observaciones de calidad\"]},\n  \"fortalezas\": [\"Solo las genuinas\"],\n  \"recomendaciones\": [\"Priorizadas por impacto\"],\n  \"ciclo_n\": 1,\n  \"modulo\": \"Ciencias Económicas / Marketing\",\n  \"norma_citacion_validada\": \"APA 7\"\n}"
+        }
+      },
+      "id": "ce8f4635-feb8-46a0-8a43-de8352021487",
+      "name": "Claude - Supervisor Economia",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "position": [
+        448,
+        848
+      ],
+      "typeVersion": 1.7
+    },
+    {
+      "parameters": {
+        "jsCode": "// ── GABINETE DE ESTUDIOS — Code Node v2.0 ──────────────────────────────────\nlet textoCrudo = $json.output || '';\nlet textoLimpio = textoCrudo\n  .replace(/```json\\s*/gi, '')\n  .replace(/```\\s*/g, '')\n  .replace(/^\\s*=+\\s*/g, '')\n  .trim();\nlet resultado;\ntry {\n  resultado = JSON.parse(textoLimpio);\n} catch (e) {\n  resultado = {\n    resumen_ejecutivo: 'ERROR DE PARSEO: Claude no devolvió JSON válido. Revisar output.',\n    tabla_confianza: {coherencia_titulo_problema: 0, delimitacion_metodologica: 0, viabilidad_ejecucion: 0, promedio_general: 0},\n    fallas_criticas: {errores: ['OUTPUT_INVALIDO: ' + e.message, 'Texto recibido: ' + textoCrudo.substring(0, 500)]},\n    fallas_menores: {observaciones: []},\n    fortalezas: [],\n    recomendaciones: ['Revisar el prompt de Claude y re-ejecutar el workflow'],\n    ciclo_n: 1,\n    modulo: 'ERROR',\n    norma_citacion_validada: 'N/A',\n    _parse_error: true,\n    _raw_output: textoCrudo.substring(0, 1000)\n  };\n}\nif (!resultado.ciclo_n) resultado.ciclo_n = 1;\nreturn resultado;"
+      },
+      "id": "820467ef-b482-4229-8f1d-8c4c82774d95",
+      "name": "Code - Parser Economia",
+      "type": "n8n-nodes-base.code",
+      "position": [
+        752,
+        848
+      ],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://dpnlmtirbhybigooujhy.supabase.co/rest/v1/auditorias",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "apikey",
+              "value": "REDACTED_SERVICE_ROLE_KEY"
+
+            },
+            {
+              "name": "Authorization",
+              "value": "REDACTED_SERVICE_ROLE_KEY"
+            },
+            {
+              "name": "Content-Type",
+              "value": "=application/json"
+            },
+            {
+              "name": "Content-Profile",
+              "value": "=gabinete"
+            },
+            {
+              "name": "Prefer",
+              "value": "=return=representation"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"proyecto_id\": \"{{ $('Webhook').item.json.body.record.id }}\",\n  \"resumen_ejecutivo\": \"{{ $json.resumen_ejecutivo }}\",\n  \"tabla_confianza\": {{ JSON.stringify($json.tabla_confianza) }},\n  \"fallas_criticas\": {{ JSON.stringify($json.fallas_criticas) }}\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.4,
+      "position": [
+        1040,
+        352
+      ],
+      "id": "b55cb0be-5db1-41d6-9fc2-bfe5e9a42b15",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": false,
+                  "leftValue": "",
+                  "typeValidation": "loose",
+                  "version": 1
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.body.record.work_type }}",
+                    "rightValue": "tesis",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "rule-tesis"
+                  },
+                  {
+                    "leftValue": "={{ $json.body.record.work_type }}",
+                    "rightValue": "artículo",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "rule-articulo"
+                  }
+                ],
+                "combinator": "or"
+              },
+              "renameOutput": true,
+              "outputKey": "Empírico"
+            }
+          ]
+        },
+        "options": {
+          "fallbackOutput": "extra"
+        }
+      },
+      "id": "b78f0072-c00b-49b8-82f0-7eae1bfa71b9",
+      "name": "Switch - Categoria",
+      "type": "n8n-nodes-base.switch",
+      "position": [
+        -528,
+        720
+      ],
+      "typeVersion": 3
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=[DATOS DEL PROYECTO]\n- Título: {{ $json.body.record.title }}\n- Disciplina: {{ $json.body.record.career }}\n- Nivel Académico: {{ $json.body.record.academic_level }}\n- Norma de Citación: {{ $json.body.record.citation_style }}\n- Tipo de documento: {{ $json.body.record.work_type }}\n\n[ROL — ANALISTA DOCUMENTAL]\nSos el Analista Documental del Gabinete de Estudios. Evaluás documentos NO empíricos: informes, monografías, ensayos, trabajos prácticos, manuales, libros y pósters. Tu evaluación es de ESTRUCTURA Y UTILIDAD, no de metodología de investigación científica. NUNCA evalúes hipótesis, muestra, instrumento validado, comité de ética o diseño experimental — esos criterios no aplican a esta categoría de documentos.\n\n[CRITERIOS DE AUDITORÍA DOCUMENTAL]\n1. PROPÓSITO Y AUDIENCIA: ¿El documento declara con claridad su propósito y a quién está dirigido? Para un manual: ¿queda claro quién lo va a usar y para qué?\n2. ESTRUCTURA Y COMPLETITUD: ¿Tiene todas las secciones esperadas para su tipo (introducción, desarrollo, cierre; o pasos completos y ordenados si es un manual)? ¿Faltan partes esenciales?\n3. COHERENCIA INTERNA: ¿El contenido es consistente de principio a fin, sin contradicciones ni saltos lógicos?\n4. CLARIDAD Y USABILIDAD: ¿El lenguaje es claro para el destinatario declarado? Para un manual, ¿los pasos son ejecutables sin ambigüedad?\n5. FUENTES Y SUSTENTO (cuando aplica): monografías, ensayos y libros deben citar fuentes según la norma declarada. Manuales y trabajos prácticos no necesariamente requieren bibliografía extensa.\n6. ALERTA DE RECLASIFICACIÓN: si pese a estar declarado como {{ $json.body.record.work_type }}, el contenido evidencia una investigación primaria propia (recolección de datos, encuesta, intervención con sujetos), señalalo como observación para que el Supervisor decida si corresponde evaluar bajo criterios de investigación empírica.\n\n[INSTRUCCIÓN DE SALIDA]\nReporte técnico con: (1) Propósito y audiencia detectados, (2) Completitud estructural, (3) Claridad/usabilidad, (4) Alertas (incluida la de reclasificación si corresponde). Directo y técnico para el Supervisor.",
+        "messages": {
+          "messageValues": [
+            {
+              "message": "=Sos el Analista Documental del Gabinete de Estudios.\n\nDatos del proyecto:\n- Título: {{ $json.body.record.title }}\n- Disciplina: {{ $json.body.record.career }}\n- Nivel: {{ $json.body.record.academic_level }}\n- Tipo de documento: {{ $json.body.record.work_type }}\n\nEvaluá este documento NO empírico bajo criterios de estructura y utilidad (NO de investigación científica):\n1. ¿Declara con claridad propósito y audiencia?\n2. ¿Tiene estructura completa para su tipo?\n3. ¿Es internamente coherente?\n4. ¿Es claro y usable para su destinatario?\n5. ¿Cita fuentes adecuadas cuando corresponde?\n6. ¿Hay indicios de que en realidad es una investigación empírica mal clasificada?\n\nReporte directo y técnico para el Supervisor Documental Senior."
+            }
+          ]
+        }
+      },
+      "id": "61d08384-abc3-4d2e-a413-b057fdef5d59",
+      "name": "Analista Documental",
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "position": [
+        112,
+        1008
+      ],
+      "typeVersion": 1.5
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=[CONTEXTO ORIGINAL — WEBHOOK]\nProyecto: {{ $('Webhook').item.json.body.record.title }}\nNivel: {{ $('Webhook').item.json.body.record.academic_level }}\nNorma: {{ $('Webhook').item.json.body.record.citation_style }}\nTipo de Documento: {{ $('Webhook').item.json.body.record.work_type }}\n\n[INFORME TÉCNICO DEL ANALISTA GEMINI]\n{{ $json.text }}\n\n[INSTRUCCIÓN DE DICTAMEN]\nBasado en los datos del proyecto y el informe de Gemini, emite el veredicto final en formato JSON estricto. Recordá: este es un documento NO empírico, no apliques criterios de investigación científica.",
+        "options": {
+          "systemMessage": "=Eres el Supervisor Documental Senior del Gabinete de Estudios (FEO-UNA, Paraguay), bajo coordinación del Lic. Dionicio Alderete Gray. Evaluás documentos NO empíricos: informe, monografía, ensayo, trabajo_practico, manual, libro y poster.\n\nPRINCIPIO RECTOR: estos documentos NO son investigaciones científicas. JAMÁS exijas ni menciones como falla la ausencia de hipótesis, pregunta de investigación, diseño metodológico, muestra, instrumento validado o aprobación de comité de ética — esos criterios pertenecen exclusivamente a tesis y artículos científicos (Flujo A) y no aplican aquí.\n\nVARIABLES DEL PROYECTO (desde Webhook):\n- Título: {{ $('Webhook').item.json.body.record.title }}\n- Disciplina: {{ $('Webhook').item.json.body.record.career }}\n- Nivel: {{ $('Webhook').item.json.body.record.academic_level }}\n- Tipo de documento: {{ $('Webhook').item.json.body.record.work_type }}\n- Norma: {{ $('Webhook').item.json.body.record.citation_style }}\n\nCRITERIOS DE EVALUACIÓN — DOCUMENTAL:\n1. Propósito y audiencia: debe estar claro para quién es y para qué sirve el documento\n2. Completitud estructural según su tipo (manual = pasos completos y ejecutables; ensayo = tesis argumentativa con desarrollo; monografía/libro = desarrollo temático con fuentes; trabajo_practico = coherencia con la consigna)\n3. Coherencia interna y consistencia terminológica\n4. Claridad y usabilidad para el destinatario declarado\n5. Fuentes y citación según norma declarada, cuando el tipo de documento lo amerite (no aplica igual a un manual que a una monografía)\n6. Si detectás que el documento, pese a su work_type declarado, contiene una investigación primaria propia, indícalo en recomendaciones como sugerencia de reclasificación — NO lo evalúes como si ya fuera tesis/artículo\n\nOBLIGACIÓN DE FORMATO DE SALIDA:\nDevolver ÚNICAMENTE un objeto JSON puro y válido (sin ```json):\n\n{\n  \"resumen_ejecutivo\": \"Dictamen sobre completitud, claridad y utilidad del documento (máx. 250 palabras)\",\n  \"tabla_confianza\": {\"coherencia_titulo_problema\": 4.5, \"delimitacion_metodologica\": 3.8, \"viabilidad_ejecucion\": 4.2, \"promedio_general\": 4.17},\n  \"fallas_criticas\": {\"errores\": [\"Fallas que invalidan el documento para su propósito declarado\"]},\n  \"fallas_menores\": {\"observaciones\": [\"Observaciones de calidad\"]},\n  \"fortalezas\": [\"Solo las genuinas\"],\n  \"recomendaciones\": [\"Priorizadas por impacto\"],\n  \"ciclo_n\": 1,\n  \"modulo\": \"Documental\",\n  \"norma_citacion_validada\": \"{{ $('Webhook').item.json.body.record.citation_style }}\"\n}"
+        }
+      },
+      "id": "b6400140-e899-417f-b00a-0ce6e23edbe4",
+      "name": "Supervisor Documental",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "position": [
+        480,
+        1056
+      ],
+      "typeVersion": 1.7
+    },
+    {
+      "parameters": {
+        "jsCode": "// ── GABINETE DE ESTUDIOS — Code Node v2.0 ──────────────────────────────────\nlet textoCrudo = $json.output || '';\nlet textoLimpio = textoCrudo\n  .replace(/```json\\s*/gi, '')\n  .replace(/```\\s*/g, '')\n  .replace(/^\\s*=+\\s*/g, '')\n  .trim();\nlet resultado;\ntry {\n  resultado = JSON.parse(textoLimpio);\n} catch (e) {\n  resultado = {\n    resumen_ejecutivo: 'ERROR DE PARSEO: Claude no devolvió JSON válido. Revisar output.',\n    tabla_confianza: {coherencia_titulo_problema: 0, delimitacion_metodologica: 0, viabilidad_ejecucion: 0, promedio_general: 0},\n    fallas_criticas: {errores: ['OUTPUT_INVALIDO: ' + e.message, 'Texto recibido: ' + textoCrudo.substring(0, 500)]},\n    fallas_menores: {observaciones: []},\n    fortalezas: [],\n    recomendaciones: ['Revisar el prompt de Claude y re-ejecutar el workflow'],\n    ciclo_n: 1,\n    modulo: 'ERROR',\n    norma_citacion_validada: 'N/A',\n    _parse_error: true,\n    _raw_output: textoCrudo.substring(0, 1000)\n  };\n}\nif (!resultado.ciclo_n) resultado.ciclo_n = 1;\nreturn resultado;"
+      },
+      "id": "1b4f4240-ce7c-4179-acb3-872edf2ccd93",
+      "name": "Parser Documental",
+      "type": "n8n-nodes-base.code",
+      "position": [
+        768,
+        1024
+      ],
+      "typeVersion": 2
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Filtro — Solo en_auditoria",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filtro — Solo en_auditoria": {
+      "main": [
+        [
+          {
+            "node": "Switch - Categoria",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Gemini - Analista Derecho",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Gemini - Analista Seguridad",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Gemini - Analista Salud",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Gemini - Analista Arquitectura",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Gemini - Analista Ingenieria",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Gemini - Analista Economia",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Gemini - Analista Economia",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Error — Disciplina no reconocida",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Gemini - Analista Salud",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Gemini - Analista Derecho",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Gemini - Analista Seguridad",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Gemini - Analista Arquitectura",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Gemini - Analista Ingenieria",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Gemini - Analista Economia",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Analista Documental",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Anthropic Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Claude - Supervisor Salud",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Claude - Supervisor Derecho",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Claude - Supervisor Seguridad",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Claude - Supervisor Arquitectura",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Claude - Supervisor Ingenieria",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Claude - Supervisor Economia",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Supervisor Documental",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gemini - Analista Derecho": {
+      "main": [
+        [
+          {
+            "node": "Claude - Supervisor Derecho",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Claude - Supervisor Derecho": {
+      "main": [
+        [
+          {
+            "node": "Code - Parser Derecho",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code - Parser Derecho": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gemini - Analista Seguridad": {
+      "main": [
+        [
+          {
+            "node": "Claude - Supervisor Seguridad",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Claude - Supervisor Seguridad": {
+      "main": [
+        [
+          {
+            "node": "Code - Parser Seguridad",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code - Parser Seguridad": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gemini - Analista Salud": {
+      "main": [
+        [
+          {
+            "node": "Claude - Supervisor Salud",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Claude - Supervisor Salud": {
+      "main": [
+        [
+          {
+            "node": "Code - Parser Salud",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code - Parser Salud": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gemini - Analista Arquitectura": {
+      "main": [
+        [
+          {
+            "node": "Claude - Supervisor Arquitectura",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Claude - Supervisor Arquitectura": {
+      "main": [
+        [
+          {
+            "node": "Code - Parser Arquitectura",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code - Parser Arquitectura": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gemini - Analista Ingenieria": {
+      "main": [
+        [
+          {
+            "node": "Claude - Supervisor Ingenieria",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Claude - Supervisor Ingenieria": {
+      "main": [
+        [
+          {
+            "node": "Code - Parser Ingenieria",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code - Parser Ingenieria": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gemini - Analista Economia": {
+      "main": [
+        [
+          {
+            "node": "Claude - Supervisor Economia",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Claude - Supervisor Economia": {
+      "main": [
+        [
+          {
+            "node": "Code - Parser Economia",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code - Parser Economia": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch - Categoria": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Analista Documental",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Analista Documental": {
+      "main": [
+        [
+          {
+            "node": "Supervisor Documental",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supervisor Documental": {
+      "main": [
+        [
+          {
+            "node": "Parser Documental",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parser Documental": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "instanceId": "e0e6002b4d8aeaa93e0cbeeb5fcec18a902664b6485cae2028709e3887f899de"
+  }
+}

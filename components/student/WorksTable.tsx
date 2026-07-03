@@ -4,6 +4,7 @@ import { Fragment, useState } from 'react'
 import type { AcademicWork } from '@/types'
 import DownloadDocButton from './DownloadDocButton'
 import TutorChat from './TutorChat'
+import StatisticsPanel from './StatisticsPanel'
 
 const STATUS_LABEL: Record<string, string> = {
   pendiente_pago: 'Pendiente de pago',
@@ -25,6 +26,7 @@ interface Props {
 
 export default function WorksTable({ works }: Props) {
   const [openChatId, setOpenChatId] = useState<string | null>(null)
+  const [openStatsId, setOpenStatsId] = useState<string | null>(null)
 
   if (works.length === 0) {
     return (
@@ -64,6 +66,9 @@ export default function WorksTable({ works }: Props) {
             </th>
             <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-zinc-500">
               Tutor
+            </th>
+            <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-zinc-500">
+              Estadística
             </th>
           </tr>
         </thead>
@@ -105,11 +110,28 @@ export default function WorksTable({ works }: Props) {
                     </button>
                   )}
                 </td>
+                <td className="px-4 py-3">
+                  {work.status !== 'pendiente_pago' && (
+                    <button
+                      onClick={() => setOpenStatsId(openStatsId === work.id ? null : work.id)}
+                      className="rounded-lg border border-zinc-200 px-3 py-1 text-xs font-medium text-zinc-700 hover:bg-zinc-50 transition"
+                    >
+                      {openStatsId === work.id ? 'Ocultar' : 'Analizar datos'}
+                    </button>
+                  )}
+                </td>
               </tr>
               {openChatId === work.id && (
                 <tr>
-                  <td colSpan={6} className="bg-zinc-50 px-4 py-4">
+                  <td colSpan={7} className="bg-zinc-50 px-4 py-4">
                     <TutorChat workId={work.id} onClose={() => setOpenChatId(null)} />
+                  </td>
+                </tr>
+              )}
+              {openStatsId === work.id && (
+                <tr>
+                  <td colSpan={7} className="bg-zinc-50 px-4 py-4">
+                    <StatisticsPanel workId={work.id} onClose={() => setOpenStatsId(null)} />
                   </td>
                 </tr>
               )}
