@@ -25,3 +25,47 @@ No exigen diseño de investigación primaria. Se evalúan por estructura, clarid
 
 ## Regla de oro
 Ante ambigüedad de clasificación, el Gabinete prioriza **la interpretación menos exigente** (Categoría B) y dejar constancia en el diagnóstico de que el tipo declarado podría ameritar revisión, en vez de rechazar el trabajo por criterios que no le corresponden.
+
+## Checklist específico por tipo (Flujo B — Analista/Supervisor Documental)
+
+Además del criterio general de Categoría B (propósito, estructura, coherencia, claridad), estos cuatro tipos tienen un checklist adicional que n8n aplica dentro del mismo Flujo B (no requiere ramas separadas):
+
+**Manual**
+- ¿Cada paso/procedimiento está numerado y en orden ejecutable?
+- ¿Se identifica claramente quién debe ejecutar cada paso y con qué recursos?
+- ¿Hay advertencias o excepciones documentadas donde el procedimiento puede fallar?
+- ¿Existe una sección de alcance/objetivo del manual al inicio?
+
+**Ensayo**
+- ¿Hay una tesis o postura central identificable en la introducción?
+- ¿Cada párrafo argumental aporta evidencia o razonamiento a esa tesis (no solo descripción)?
+- ¿Hay una conclusión que retome la tesis, no solo un resumen?
+- ¿Se citan fuentes que respalden los argumentos, no solo opinión del autor?
+
+**Trabajo práctico**
+- ¿Se identifica la consigna o el caso que dio origen al trabajo?
+- ¿El desarrollo aplica correctamente los conceptos/herramientas pedidos en la consigna?
+- ¿Hay evidencia concreta del trabajo realizado (cálculos, capturas, resultados, análisis)?
+- ¿Las conclusiones responden directamente a lo que la consigna pedía?
+
+**Libro**
+- ¿Los capítulos tienen una progresión lógica entre sí (no son bloques inconexos)?
+- ¿Hay introducción que declare el propósito de la obra y a quién está dirigida?
+- ¿El nivel de originalidad es coherente con el propósito declarado (divulgación/cátedra/aporte original)?
+- ¿Las fuentes están citadas de forma consistente en todos los capítulos?
+
+`informe`, `monografía` y `poster` no tienen checklist adicional — se evalúan solo con el criterio general de Categoría B.
+
+## Arquitectura del pipeline de auditoría (n8n)
+
+```
+Webhook (Supabase) → Filtro (status = en_auditoría) → Switch — Categoría (work_type)
+  ├─ Empírico (tesis, artículo) → Switch por disciplina (Flujo A: Derecho, Seguridad,
+  │    Salud, Arquitectura, Ingeniería, Economía) → Gemini Analista → Claude Supervisor
+  │    → Code Parser → HTTP Request → gabinete.auditorias
+  └─ Documental (informe, monografía, ensayo, trabajo_practico, manual, libro, poster)
+       → Analista Documental → Supervisor Documental → Parser Documental
+       → HTTP Request (mismo nodo compartido) → gabinete.auditorias
+```
+
+Cambiar esta categorización requiere actualizar el `Switch - Categoria` en n8n y esta tabla en simultáneo.
