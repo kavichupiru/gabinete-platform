@@ -1,5 +1,9 @@
+'use client'
+
+import { Fragment, useState } from 'react'
 import type { AcademicWork } from '@/types'
 import DownloadDocButton from './DownloadDocButton'
+import TutorChat from './TutorChat'
 
 const STATUS_LABEL: Record<string, string> = {
   pendiente_pago: 'Pendiente de pago',
@@ -20,6 +24,8 @@ interface Props {
 }
 
 export default function WorksTable({ works }: Props) {
+  const [openChatId, setOpenChatId] = useState<string | null>(null)
+
   if (works.length === 0) {
     return (
       <div className="rounded-2xl border border-dashed border-zinc-300 bg-white p-10 text-center">
@@ -56,36 +62,58 @@ export default function WorksTable({ works }: Props) {
             <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-zinc-500">
               Informe
             </th>
+            <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wide text-zinc-500">
+              Tutor
+            </th>
           </tr>
         </thead>
         <tbody className="divide-y divide-zinc-100">
           {works.map((work) => (
-            <tr key={work.id} className="hover:bg-zinc-50 transition">
-              <td className="px-4 py-3 font-medium text-zinc-900">{work.title}</td>
-              <td className="hidden px-4 py-3 capitalize text-zinc-600 sm:table-cell">
-                {work.work_type}
-              </td>
-              <td className="hidden px-4 py-3 capitalize text-zinc-600 md:table-cell">
-                {work.academic_level}
-              </td>
-              <td className="px-4 py-3">
-                <span
-                  className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium ring-1 ring-inset ${STATUS_COLOR[work.status] ?? 'bg-zinc-100 text-zinc-600 ring-zinc-200'}`}
-                >
-                  {STATUS_LABEL[work.status] ?? work.status}
-                </span>
-              </td>
-              <td className="px-4 py-3 text-zinc-500">
-                {new Date(work.created_at).toLocaleDateString('es-PY', {
-                  day: '2-digit',
-                  month: 'short',
-                  year: 'numeric',
-                })}
-              </td>
-              <td className="px-4 py-3">
-                {work.status === 'entregado' && <DownloadDocButton workId={work.id} />}
-              </td>
-            </tr>
+            <Fragment key={work.id}>
+              <tr className="hover:bg-zinc-50 transition">
+                <td className="px-4 py-3 font-medium text-zinc-900">{work.title}</td>
+                <td className="hidden px-4 py-3 capitalize text-zinc-600 sm:table-cell">
+                  {work.work_type}
+                </td>
+                <td className="hidden px-4 py-3 capitalize text-zinc-600 md:table-cell">
+                  {work.academic_level}
+                </td>
+                <td className="px-4 py-3">
+                  <span
+                    className={`inline-flex items-center rounded-full px-2 py-0.5 text-xs font-medium ring-1 ring-inset ${STATUS_COLOR[work.status] ?? 'bg-zinc-100 text-zinc-600 ring-zinc-200'}`}
+                  >
+                    {STATUS_LABEL[work.status] ?? work.status}
+                  </span>
+                </td>
+                <td className="px-4 py-3 text-zinc-500">
+                  {new Date(work.created_at).toLocaleDateString('es-PY', {
+                    day: '2-digit',
+                    month: 'short',
+                    year: 'numeric',
+                  })}
+                </td>
+                <td className="px-4 py-3">
+                  {work.status === 'entregado' && <DownloadDocButton workId={work.id} />}
+                </td>
+                <td className="px-4 py-3">
+                  {work.status !== 'pendiente_pago' && (
+                    <button
+                      onClick={() => setOpenChatId(openChatId === work.id ? null : work.id)}
+                      className="rounded-lg border border-zinc-200 px-3 py-1 text-xs font-medium text-zinc-700 hover:bg-zinc-50 transition"
+                    >
+                      {openChatId === work.id ? 'Ocultar' : 'Consultar tutor'}
+                    </button>
+                  )}
+                </td>
+              </tr>
+              {openChatId === work.id && (
+                <tr>
+                  <td colSpan={6} className="bg-zinc-50 px-4 py-4">
+                    <TutorChat workId={work.id} onClose={() => setOpenChatId(null)} />
+                  </td>
+                </tr>
+              )}
+            </Fragment>
           ))}
         </tbody>
       </table>
