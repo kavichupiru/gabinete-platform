@@ -41,3 +41,14 @@ agent-browser open localhost:3000/dashboard/student && agent-browser wait --load
 Instalar vía `npm install agent-browser` está roto en Windows (issue conocido: postinstall
 no descarga el binario, y Windows Defender marca el .exe como falso positivo).
 Usar siempre `cargo install agent-browser` en esta máquina.
+
+## Producción/edición de manuscritos basados en evidencia (manuales, libros, protocolos, artículos)
+
+Antes de trabajar en cualquier encargo de tipo `manual`, `libro`, protocolo clínico, guía de
+práctica o artículo científico (ver clasificación en `docs/diccionario-gabinete.md`), leer
+**`docs/metodologia-manuscritos-evidencia-cientifica.md`** — define el proceso capítulo por
+capítulo, el carril específico de ciencias de la salud, la matriz de estándares de reporte
+(AGREE II, GRADE, PRISMA, CONSORT, STROBE, STARD, CARE, SQUIRE, ICMJE, COPE, ISBN, etc.),
+el protocolo de revisión por pares/autorrevisión, y las trampas técnicas conocidas de
+python-docx para este tipo de trabajo. Es de lectura obligatoria antes de tocar contenido,
+no opcional.
