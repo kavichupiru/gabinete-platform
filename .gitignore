@@ -44,3 +44,6 @@ next-env.d.ts
 padron_migracion/.venv/
 padron_migracion/input/
 padron_migracion/output/
+
+# playwright MCP (desuso — usar agent-browser, ver AGENTS.md)
+.playwright-mcp/
